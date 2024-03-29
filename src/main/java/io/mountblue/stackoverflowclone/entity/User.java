@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Setter
 @Getter
@@ -17,5 +19,12 @@ public class User {
     private String name;
     private String email;
     private String password;
-
+    @OneToMany(mappedBy = "user")
+    private Set<Question> questions;
+    @OneToMany(mappedBy = "user")
+    private Set<Answer> answers;
+    @OneToMany(mappedBy = "user")
+    private Set<Vote> votes;
+    @OneToMany(mappedBy = "user")
+    private Set<Comment> comments;
 }

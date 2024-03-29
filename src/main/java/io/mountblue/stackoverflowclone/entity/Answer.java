@@ -17,11 +17,18 @@ public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String title;
+    @Column(columnDefinition = "TEXT")
     private String content;
     private LocalDateTime publishedAt;
     private LocalDateTime updatedAt;
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
+    @ManyToOne(cascade = CascadeType.ALL    )
+    @JoinColumn(name = "user_id")
     private User user;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "answer_id")
     List<Comment> comments;
 
 }
