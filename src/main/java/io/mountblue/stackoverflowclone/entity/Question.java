@@ -18,13 +18,12 @@ public class Question {
     private Long id;
     private String title;
     @Column(columnDefinition = "TEXT")
-    private String problemContent;
-    @Column(columnDefinition = "TEXT")
-    private String expectedAndTriedContent;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private String content;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private Long viewCount;
     private Long voteCount;
+    private Boolean isAnswered;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

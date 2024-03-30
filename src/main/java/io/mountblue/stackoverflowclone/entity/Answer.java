@@ -21,10 +21,11 @@ public class Answer {
     private String content;
     private LocalDateTime publishedAt;
     private LocalDateTime updatedAt;
+    private Boolean isCorrectAnswer;
     @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;
-    @ManyToOne(cascade = CascadeType.ALL    )
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
     @OneToMany(cascade = CascadeType.ALL)
