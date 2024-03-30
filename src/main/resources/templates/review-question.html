@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ask a Question - Sample</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.tiny.cloud/1/n2yt5333pdk4hp0uh9h0j9h6cn2grrnfmmy1sv8dgqihn7kp/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <style>
+        .false{
+            opacity:0.4;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4" >
+    <h1>Ask a Public Question</h1>
+    <form action="#" th:action="@{/saveQuestion}" th:method="post" th:object="${question}" th:class="${showTitle}">
+        <div class="form-group">
+            <label for="questionTitle">Title</label>
+            <p>Be specific and imagine you are asking a question to another person.</p>
+            <input type="text" class="form-control" id="questionTitle" th:field="*{title}" th:value="*{title}" th:text="*{title}" placeholder="Enter your question title" >
+        </div>
+        <br>
+        <div class="form-group" >
+            <label>Body</label>
+            <p>The body of your question contains your problem details and results. Minimum 220 characters.</p>
+            <textarea class="form-control" id="content" name="content" th:field="*{content}" th:text="*{content}" rows="6" placeholder="Enter details about your question" ></textarea>
+            <script>
+                tinymce.init({
+                    selector: '#content',
+                    plugins: 'link lists media core codesample image table',
+                    toolbar: 'h1 bold italic  | codesample code | link | image table | numlist bullist horizonatal-rule',
+                    toolbar_mode: 'floating',
+                    tinycomments_author: 'Ashutosh Kalra',
+                    menubar : false,
+                    indentation : '20pt',
+                    block_unsupported_drop: false,
+                });
+            </script>
+        </div>
+        <br>
+        <div class="form-group">
+            <label>Add Tags</label>
+            <p>Add up to 5 tags to describe what your question is about. Start typing to see suggestions.</p>
+            <div>
+                <label for="tagList">Tags:</label>
+                <textarea class="form-control" name="tagList" id="tagList" th:value="${tagList}" th:text="${tagList}" rows="1" placeholder="Enter Tags"></textarea>
+            </div>
+            <br>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Post your question</button>
+    </form>
+</div>
+</body>
+</html>

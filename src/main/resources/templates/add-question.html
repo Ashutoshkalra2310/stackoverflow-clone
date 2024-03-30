@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ask a Question - Sample</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.tiny.cloud/1/n2yt5333pdk4hp0uh9h0j9h6cn2grrnfmmy1sv8dgqihn7kp/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <style>
+        .false{
+            opacity:0.4;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4" >
+    <h1>Ask a Public Question</h1>
+    <form action="#" th:action="${saveQ ? '/reviewQuestion' : '/question'}" method="GET" th:object="${question}" th:class="${showTitle}">
+            <div class="form-group">
+                <label for="questionTitle">Title</label>
+                <p>Be specific and imagine you are asking a question to another person.</p>
+                <input type="text" class="form-control" id="questionTitle" th:field="*{title}" th:value="*{title}" th:text="*{title}" placeholder="Enter your question title" >
+            </div>
+            <button type="submit" class="btn btn-primary">Next</button><br>
+        <input type="hidden" th:field="*{content}">
+        <input type="hidden" th:each="tag : ${tags}" th:name="${tag.name}" th:field="${tag.name}" th:value="${tag.name}">
+
+        <div class="form-group" >
+            <label>What are the details of your problem?</label>
+            <p>Introduce the problem and expand on what you want to put in the title. Minimum 20 characters.</p>
+            <textarea class="form-control" id="detailedProblem" name="detailedProblem"  th:value="${detailedProblem}" th:text="${detailedProblem}" rows="6" placeholder="Enter details about your question" ></textarea>
+            <script>
+                tinymce.init({
+                    selector: '#detailedProblem',
+                    plugins: 'link lists media core codesample image table',
+                    toolbar: 'h1 bold italic  | codesample code | link | image table | numlist bullist horizonatal-rule',
+                    toolbar_mode: 'floating',
+                    tinycomments_author: 'Ashutosh Kalra',
+                    menubar : false,
+                    indentation : '20pt',
+                    block_unsupported_drop: false,
+                });
+            </script>
+        </div>
+            <button type="submit" class="btn btn-primary">Next</button><br><br>
+
+        <div class="form-group">
+            <label>What did you try and what were you expecting?</label>
+            <p>Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters</p>
+            <textarea class="form-control" id="expectingResults" name="expectingResults"
+                      th:value="${expectingResults}" th:text="${expectingResults}" placeholder="Enter details about your question" rows="6"></textarea>
+            <script>
+                tinymce.init({
+                    selector: '#expectingResults',
+                    plugins: 'link lists media core codesample image table',
+                    toolbar: 'h1 bold italic  | codesample code | link | image table | numlist bullist horizonatal-rule',
+                    tinycomments_author: 'Ashutosh Kalra',
+                    menubar : false,
+                    block_unsupported_drop: false,
+                });
+            </script>
+        </div>
+            <button type="submit" class="btn btn-primary">Next</button><br><br>
+
+        <div class="form-group">
+            <label>Add Tags</label>
+            <p>Add up to 5 tags to describe what your question is about. Start typing to see suggestions.</p>
+            <div>
+                <label for="tagList">Tags:</label>
+                <textarea class="form-control" name="tagList" id="tagList" th:value="${tagList}" th:text="${tagList}" rows="1" placeholder="Enter Tags"></textarea>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Next</button><br><br>
+        </div>
+<!--        <div class="form-group">-->
+<!--            <label>Review questions already on Stack Overflow to see if your question is a duplicate.</label>-->
+<!--            <p> Clicking on these questions will open them in a new tab for you to review. Your progress here will be saved so you can come back and continue.</p>-->
+<!--            <div class="container">-->
+<!--                <h7> Do any of these posts answer your question? </h7>-->
+<!--                <div th:each="question : ${questions}" class="question">-->
+<!--                    <p th:text="${question}"></p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+        <button type="submit" class="btn btn-primary">Review Question</button>
+    </form>
+</div>
+</body>
+</html>

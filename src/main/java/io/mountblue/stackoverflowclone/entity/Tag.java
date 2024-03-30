@@ -18,4 +18,14 @@ public class Tag {
     String description;
     @ManyToMany(mappedBy = "tags")
     private Set<Question> questions;
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", questions=" + questions +
+                '}';
+    }
 }
