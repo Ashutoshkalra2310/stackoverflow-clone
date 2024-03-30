@@ -25,7 +25,7 @@ public class Question {
     private Long viewCount;
     private Long voteCount;
     private Boolean isAnswered;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     private User user;
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
@@ -33,7 +33,7 @@ public class Question {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id")
     List<Comment> comments;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "question_tags",
             joinColumns = @JoinColumn(name = "question_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))

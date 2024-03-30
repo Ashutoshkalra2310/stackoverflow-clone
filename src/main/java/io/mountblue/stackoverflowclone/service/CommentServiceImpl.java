@@ -33,4 +33,9 @@ public class CommentServiceImpl implements CommentService{
         comment.setUpdatedAt(LocalDateTime.now());
         commentRepository.save(comment);
     }
+
+    @Override
+    public void deleteComment(Comment comment) {
+        commentRepository.delete(comment);
+    }
 }
