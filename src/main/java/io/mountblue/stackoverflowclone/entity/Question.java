@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,6 +30,9 @@ public class Question {
     private User user;
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private Set<Answer> answers;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id")
+    List<Comment> comments;
     @ManyToMany
     @JoinTable(name = "question_tags",
             joinColumns = @JoinColumn(name = "question_id"),
