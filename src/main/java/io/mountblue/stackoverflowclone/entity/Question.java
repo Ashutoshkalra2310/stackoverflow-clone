@@ -29,7 +29,7 @@ public class Question {
     private User user;
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private Set<Answer> answers;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "question_tags",
             joinColumns = @JoinColumn(name = "question_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))

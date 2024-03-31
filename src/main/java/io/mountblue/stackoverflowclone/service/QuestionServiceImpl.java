@@ -3,7 +3,6 @@ package io.mountblue.stackoverflowclone.service;
 import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.entity.Tag;
 import io.mountblue.stackoverflowclone.repository.QuestionRepository;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,6 +17,16 @@ public class QuestionServiceImpl implements QuestionService{
     public QuestionServiceImpl(QuestionRepository questionRepository, TagService tagService) {
         this.questionRepository = questionRepository;
         this.tagService = tagService;
+    }
+
+    @Override
+    public void save(Question question) {
+        questionRepository.save(question);
+    }
+
+    @Override
+    public List<Question> getAllQuestions() {
+        return questionRepository.findAll();
     }
 
     @Override
@@ -54,5 +63,4 @@ public class QuestionServiceImpl implements QuestionService{
         Question question = questionRepository.findById(id).get();
         questionRepository.delete(question);
     }
-
 }

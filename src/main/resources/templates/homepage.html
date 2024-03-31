@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .question-list {
+            margin-bottom: 20px;
+        }
+
+        .question {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .question h3 {
+            margin-top: 0;
+        }
+
+        .meta {
+            color: #666;
+            font-size: 0.8em;
+        }
+
+        .meta .author {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .meta .tags a {
+            display: inline-block;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 2px 5px;
+            margin-right: 5px;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        a {
+            text-decoration: none;
+            color: #62b3e1;
+        }
+        a:hover {
+            color: #2d607c;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>StackOverflow Clone</h1>
+</header>
+<main>
+    <section class="question-list">
+        <h2>Latest Questions</h2>
+        <ul>
+            <!-- Iterate over questions -->
+            <li th:each="question : ${questions}">
+                <div class="question">
+                    <h3><a th:href="@{'/question/' + ${question.id}}" th:text="${question.title}">Question Title</a></h3>
+                    <div class="meta">
+                        <span class="tags" th:each="tag : ${question.tags}">
+                                <a th:href="@{'/tag/' + ${tag.id}}" th:text="${tag.name}">Tag</a>
+                            </span>
+                    </div>
+                    <!--                        <span class="author">Posted by <span th:text="${question.user.name}">Author</span></span>-->
+
+                </div>
+            </li>
+        </ul>
+    </section>
+</main>
+<footer>
+    <p>&copy; 2024 StackOverflow Clone</p>
+</footer>
+</body>
+</html>
