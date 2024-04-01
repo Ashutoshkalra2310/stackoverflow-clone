@@ -2,16 +2,14 @@ package io.mountblue.stackoverflowclone.controller;
 
 import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.entity.Tag;
+import io.mountblue.stackoverflowclone.entity.View;
 import io.mountblue.stackoverflowclone.service.QuestionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
 
 @Controller
 public class QuestionController {
@@ -90,4 +88,10 @@ public class QuestionController {
         return "redirect:/question";
     }
 
+
+    @GetMapping("/deleteQuestion/{questionId}")
+    public String deleteQuestion(@PathVariable("questionId") Long id){
+        questionService.deleteQuestion(id);
+        return "redirect:show-question";
+    }
 }

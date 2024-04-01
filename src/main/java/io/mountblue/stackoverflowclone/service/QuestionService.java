@@ -3,5 +3,8 @@ package io.mountblue.stackoverflowclone.service;
 import io.mountblue.stackoverflowclone.entity.Question;
 
 public interface QuestionService {
-    public void save(Question question);
+    void updateQuestion(Question question, String tagList);
+    void deleteQuestion(Long id);
+    Question findById(Long id);
+    void save(Question question);
 }

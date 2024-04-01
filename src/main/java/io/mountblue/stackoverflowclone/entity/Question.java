@@ -5,11 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name="questions")
 public class Question {
@@ -19,15 +20,19 @@ public class Question {
     private String title;
     @Column(columnDefinition = "TEXT")
     private String content;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private Long viewCount;
     private Long voteCount;
-    @ManyToOne
+    private Boolean isAnswered;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     private User user;
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private Set<Answer> answers;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id")
+    List<Comment> comments;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "question_tags",
             joinColumns = @JoinColumn(name = "question_id"),

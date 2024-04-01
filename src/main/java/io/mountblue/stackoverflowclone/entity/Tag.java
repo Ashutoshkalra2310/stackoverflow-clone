@@ -2,6 +2,7 @@ package io.mountblue.stackoverflowclone.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name="tag")
 public class Tag {
     @Id
@@ -16,7 +18,7 @@ public class Tag {
     private Long id;
     String name;
     String description;
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
     private Set<Question> questions;
 
     @Override
@@ -27,5 +29,8 @@ public class Tag {
                 ", description='" + description + '\'' +
                 ", questions=" + questions +
                 '}';
+    }
+
+    public Tag(String trim) {
     }
 }
