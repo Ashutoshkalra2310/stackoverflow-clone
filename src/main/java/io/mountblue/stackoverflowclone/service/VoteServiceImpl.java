@@ -2,8 +2,11 @@ package io.mountblue.stackoverflowclone.service;
 
 import io.mountblue.stackoverflowclone.repository.VoteRepository;
 
+@Service
 public class VoteServiceImpl implements  VoteService{
     private final VoteRepository voteRepository;
+
+    @Autowired
     public VoteServiceImpl(VoteRepository voteRepository){
         this.voteRepository=voteRepository;
     }
