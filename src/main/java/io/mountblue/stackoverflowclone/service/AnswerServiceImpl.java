@@ -2,6 +2,8 @@ package io.mountblue.stackoverflowclone.service;
 
 import io.mountblue.stackoverflowclone.entity.Answer;
 import io.mountblue.stackoverflowclone.repository.AnswerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +11,6 @@ import java.time.LocalDateTime;
 public class AnswerServiceImpl implements AnswerService{
     private final AnswerRepository answerRepository;
 
-    @Autowired
     public AnswerServiceImpl(AnswerRepository answerRepository) {
         this.answerRepository = answerRepository;
     }
@@ -18,7 +19,6 @@ public class AnswerServiceImpl implements AnswerService{
     }
     public void updateAnswer(Long id,Answer updatedAnswer) {
         Answer prevAnswer=answerRepository.findById(id).get();
-        prevAnswer.setTitle(updatedAnswer.getTitle());
         prevAnswer.setContent(updatedAnswer.getContent());
         prevAnswer.setUpdatedAt(LocalDateTime.now());
         prevAnswer.setComments(updatedAnswer.getComments());

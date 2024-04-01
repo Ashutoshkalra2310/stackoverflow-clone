@@ -1,8 +1,7 @@
 package io.mountblue.stackoverflowclone.controller;
 
 import io.mountblue.stackoverflowclone.entity.Answer;
-import io.mountblue.stackoverflowclone.service.AnswerServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.mountblue.stackoverflowclone.service.AnswerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,9 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class AnswerController {
-    private final AnswerServiceImpl answerService;
-    @Autowired
-    public AnswerController(AnswerServiceImpl answerService){
+    private final AnswerService answerService;
+    public AnswerController(AnswerService answerService){
         this.answerService=answerService;
     }
 

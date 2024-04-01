@@ -1,12 +1,13 @@
 package io.mountblue.stackoverflowclone.service;
 
 import io.mountblue.stackoverflowclone.repository.VoteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class VoteServiceImpl implements  VoteService{
     private final VoteRepository voteRepository;
 
-    @Autowired
     public VoteServiceImpl(VoteRepository voteRepository){
         this.voteRepository=voteRepository;
     }
