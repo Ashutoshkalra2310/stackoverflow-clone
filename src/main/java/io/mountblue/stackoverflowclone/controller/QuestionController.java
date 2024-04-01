@@ -13,7 +13,6 @@ public class QuestionController {
     public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
     }
-
     @GetMapping("/askQuestion")
     public String showAskQuestionForm(Model model){
         model.addAttribute("question", new Question());
