@@ -129,7 +129,7 @@
             height: 46px;
             width: 138px;
             color:white;
-            background-color:blue;
+            background-color:#0e79ea;
             border:none;
             border-radius:7px;
             font-weight: 700;
@@ -226,6 +226,12 @@
           align-content: center;
           justify-content: space-evenly;
         }
+        .form{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:space-between;
+        }
     </style>
 </head>
 <body>
@@ -267,6 +273,7 @@
             <h1>Top Questions</h1>
             <button href="#">Ask Question</button>
         </div>
+        <form action="#" method="get" class="form">
         <div class="filter">
             <div>
                 <h3 >Filter By:</h3>
@@ -284,11 +291,11 @@
             </div>
             <div>
                 <h3 >Tag:</h3>
-                <form action="/search" method="get" class="search-form">
                     <input type="text" name="tagSearch" class="search-input" style="margin-top: 20px;" placeholder="Search Tags...">
-                </form>
             </div>
         </div>
+            <button type="submit" style="height: 46px; width: 138px; color:white; background-color:#0e79ea; border:none; border-radius:7px; font-weight: 700; cursor:pointer;">Filter</button>
+        </form>
         <main>
         <section class="question-list">
             <h2 style="margin-left: 20px; margin-bottom: 20px;">Latest Questions</h2>

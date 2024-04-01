@@ -25,7 +25,7 @@ public class QuestionController {
     public String showQuestions(Model model){
         List<Question> questions =  questionService.getAllQuestions();
         model.addAttribute("questions", questions);
-        return "homepage";
+        return "all-question";
     }
     @GetMapping("/question")
     public String showQuestion(Model model,
