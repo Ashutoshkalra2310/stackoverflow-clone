@@ -15,7 +15,7 @@ public class AnswerService {
     }
     public void updateAnswer(Long id,Answer updatedAnswer) {
         Answer prevAnswer=answerRepository.findById(id).get();
-        prevAnswer.setTitle(updatedAnswer.getTitle());
+//        prevAnswer.setTitle(updatedAnswer.getTitle());
         prevAnswer.setContent(updatedAnswer.getContent());
         prevAnswer.setUpdatedAt(LocalDateTime.now());
         prevAnswer.setComments(updatedAnswer.getComments());

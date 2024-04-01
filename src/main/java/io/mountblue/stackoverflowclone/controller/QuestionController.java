@@ -1,8 +1,11 @@
 package io.mountblue.stackoverflowclone.controller;
 
 import io.mountblue.stackoverflowclone.entity.Question;
+import io.mountblue.stackoverflowclone.entity.User;
+import io.mountblue.stackoverflowclone.entity.View;
 import io.mountblue.stackoverflowclone.service.QuestionService;
 import io.mountblue.stackoverflowclone.entity.Tag;
+import io.mountblue.stackoverflowclone.service.ViewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +18,13 @@ import java.util.Set;
 @Controller
 public class QuestionController {
     private final QuestionService questionService;
+    private final ViewService viewService;
 
-    public QuestionController(QuestionService questionService) {
+    public QuestionController(QuestionService questionService, ViewService viewService) {
         this.questionService = questionService;
+        this.viewService = viewService;
     }
+
     @GetMapping({"/allQuestions", "/"})
     public String showQuestions(Model model){
         List<Question> questions =  questionService.getAllQuestions();
@@ -105,4 +111,21 @@ public class QuestionController {
         questionService.deleteQuestion(id);
         return "redirect:show-question";
     }
+
+    @GetMapping("/showQuestion/{questionId}")
+    public String showQuestion(@PathVariable("questionId") Long id, Model model){
+        Question question = questionService.findById(id);
+        View view = viewService.findByUserAndQuestion(/*User user,*/ question);
+        if(view == null){
+            view = new View();
+            view.setQuestion(question);
+//            view.setUser(user);
+            viewService.save(view);
+            question.setViewCount(question.getViewCount() + 1);
+            questionService.save(question);
+        }
+        model.addAttribute("question", question);
+        return "show-question";
+    }
+
 }

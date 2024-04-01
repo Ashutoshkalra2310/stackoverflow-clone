@@ -25,6 +25,11 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
+    public Question findById(Long questionId) {
+        return questionRepository.findById(questionId).get();
+    }
+
+    @Override
     public List<Question> getAllQuestions() {
         return questionRepository.findAll();
     }

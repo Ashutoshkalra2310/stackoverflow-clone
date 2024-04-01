@@ -10,4 +10,5 @@ public interface QuestionService {
     void updateQuestion(Question question, String tagList);
     void deleteQuestion(Long id);
     void save(Question question);
+    Question findById(Long questionId);
 }
