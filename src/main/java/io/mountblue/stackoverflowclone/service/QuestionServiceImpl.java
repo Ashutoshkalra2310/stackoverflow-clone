@@ -3,6 +3,10 @@ package io.mountblue.stackoverflowclone.service;
 import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.entity.Tag;
 import io.mountblue.stackoverflowclone.repository.QuestionRepository;
+import org.springframework.cglib.core.Local;
+import io.mountblue.stackoverflowclone.entity.Question;
+import io.mountblue.stackoverflowclone.repository.QuestionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -68,4 +72,10 @@ public class QuestionServiceImpl implements QuestionService{
         Question question = questionRepository.findById(id).get();
         questionRepository.delete(question);
     }
+
+    @Override
+    public Question findById(Long id) {
+        return questionRepository.findById(id).get();
+    }
+
 }

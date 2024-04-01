@@ -1,7 +1,6 @@
 package io.mountblue.stackoverflowclone.controller;
 
 import io.mountblue.stackoverflowclone.entity.Question;
-import io.mountblue.stackoverflowclone.entity.User;
 import io.mountblue.stackoverflowclone.entity.View;
 import io.mountblue.stackoverflowclone.service.QuestionService;
 import io.mountblue.stackoverflowclone.entity.Tag;
