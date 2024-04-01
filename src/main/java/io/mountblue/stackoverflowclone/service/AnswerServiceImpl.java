@@ -5,8 +5,11 @@ import io.mountblue.stackoverflowclone.repository.AnswerRepository;
 
 import java.time.LocalDateTime;
 
+@Service
 public class AnswerServiceImpl implements AnswerService{
     private final AnswerRepository answerRepository;
+
+    @Autowired
     public AnswerServiceImpl(AnswerRepository answerRepository) {
         this.answerRepository = answerRepository;
     }
