@@ -18,4 +18,7 @@ public class Tag {
     String description;
     @ManyToMany(mappedBy = "tags")
     private Set<Question> questions;
+
+    public Tag(String trim) {
+    }
 }
