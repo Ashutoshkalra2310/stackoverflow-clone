@@ -1,7 +1,7 @@
 package io.mountblue.stackoverflowclone.controller;
 
 import io.mountblue.stackoverflowclone.entity.Answer;
-import io.mountblue.stackoverflowclone.service.AnswerService;
+import io.mountblue.stackoverflowclone.service.AnswerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class AnswerController {
-    private final AnswerService answerService;
+    private final AnswerServiceImpl answerService;
     @Autowired
-    public AnswerController(AnswerService answerService){
+    public AnswerController(AnswerServiceImpl answerService){
         this.answerService=answerService;
     }
 
@@ -34,7 +34,7 @@ public class AnswerController {
         answerService.deleteAnswer(id);
         return "redirect:show-question";
     }
-
+    
 }
 
 
