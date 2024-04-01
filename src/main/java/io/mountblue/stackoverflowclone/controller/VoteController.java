@@ -1,13 +1,13 @@
 package io.mountblue.stackoverflowclone.controller;
 
-import io.mountblue.stackoverflowclone.service.VoteService;
+import io.mountblue.stackoverflowclone.service.VoteServiceImpl;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import static io.mountblue.stackoverflowclone.entity.VoteType.UPVOTE;
+
 
 public class VoteController {
-    private final VoteService voteService;
-    public VoteController(VoteService voteService){
+    private final VoteServiceImpl voteService;
+    public VoteController(VoteServiceImpl voteService){
         this.voteService=voteService;
     }
     @PostMapping("/upvoteQuestion/{questionId}")
@@ -33,5 +33,6 @@ public class VoteController {
         voteService.downVoteAnswer(answerId, userId);
         return "redirect:show-question";
     }
+
 
 }
