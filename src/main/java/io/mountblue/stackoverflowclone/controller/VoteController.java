@@ -4,7 +4,7 @@ import io.mountblue.stackoverflowclone.service.VoteServiceImpl;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
+@Controller
 public class VoteController {
     private final VoteServiceImpl voteService;
     public VoteController(VoteServiceImpl voteService){
