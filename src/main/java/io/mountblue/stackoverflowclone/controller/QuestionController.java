@@ -4,23 +4,29 @@ import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.entity.Tag;
 import io.mountblue.stackoverflowclone.entity.View;
 import io.mountblue.stackoverflowclone.service.QuestionService;
+import io.mountblue.stackoverflowclone.entity.Tag;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
+
 
 @Controller
 public class QuestionController {
     private final QuestionService questionService;
-    public QuestionController(QuestionService theQuestionService){
-        questionService  = theQuestionService;
+
+    public QuestionController(QuestionService questionService) {
+        this.questionService = questionService;
     }
-//    @GetMapping("/questions")
-//    public String showQuestions(Model model){
-//
-//    }
+    @GetMapping({"/allQuestions", "/"})
+    public String showQuestions(Model model){
+        List<Question> questions =  questionService.getAllQuestions();
+        model.addAttribute("questions", questions);
+        return "homepage";
+    }
     @GetMapping("/question")
     public String showQuestion(Model model,
                                @RequestParam(value = "detailedProblem", required = false) String detailedProblem,
@@ -46,14 +52,14 @@ public class QuestionController {
             question.setContent(content);
         }
         model.addAttribute("saveQ", false);
-        if(tags != null && !tags.isEmpty() && expectingResults != null && !expectingResults.isEmpty() && detailedProblem != null && !detailedProblem.isEmpty()){
+        if(tags != null && !tags.isEmpty() && expectingResults != null &&
+                !expectingResults.isEmpty() && detailedProblem != null && !detailedProblem.isEmpty()){
             model.addAttribute("saveQ", true);
 
         }
         model.addAttribute("detailedProblem", detailedProblem == null ? "" : detailedProblem);
         model.addAttribute("expectingResults", expectingResults == null ? "" : expectingResults);
         model.addAttribute("tagList", tags == null ? "" : tags);
-
 //        model.addAttribute("showTitle",true);
 //        model.addAttribute("showDetailedProblem", true);
 //        model.addAttribute("showExpectingResults", true);
@@ -73,6 +79,9 @@ public class QuestionController {
     }
     @PostMapping("/saveQuestion")
     public String saveQuestion(@ModelAttribute("question") Question question, @RequestParam("tagList") String tags){
+        if(question.getId() != null){
+            questionService.updateQuestion(question, tags);
+        }
         if(tags != null && !tags.isEmpty()){
             String[] tagsArray = tags.split(",");
             Set<Tag> tagList = new HashSet<>();
@@ -88,7 +97,11 @@ public class QuestionController {
         return "redirect:/question";
     }
 
-
+    @GetMapping("/askQuestion")
+    public String showAskQuestionForm(Model model){
+        model.addAttribute("question", new Question());
+        return "add-question";
+    }
     @GetMapping("/deleteQuestion/{questionId}")
     public String deleteQuestion(@PathVariable("questionId") Long id){
         questionService.deleteQuestion(id);

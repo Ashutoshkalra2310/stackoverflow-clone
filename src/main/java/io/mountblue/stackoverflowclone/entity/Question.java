@@ -39,13 +39,4 @@ public class Question {
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
 
-    @Override
-    public String toString() {
-        return "Question{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", Content='" + content + '\'' +
-                ", tags=" + tags +
-                '}';
-    }
 }

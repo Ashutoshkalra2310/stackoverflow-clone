@@ -24,6 +24,16 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
+    public void save(Question question) {
+        questionRepository.save(question);
+    }
+
+    @Override
+    public List<Question> getAllQuestions() {
+        return questionRepository.findAll();
+    }
+
+    @Override
     public void updateQuestion(Question updatedQuestion, String tagList) {
         Question oldQuestion = questionRepository.findById(updatedQuestion.getId()).get();
         oldQuestion.setTitle(updatedQuestion.getTitle());
@@ -61,11 +71,6 @@ public class QuestionServiceImpl implements QuestionService{
     @Override
     public Question findById(Long id) {
         return questionRepository.findById(id).get();
-    }
-
-    @Override
-    public void save(Question question) {
-        questionRepository.save(question);
     }
 
 }
