@@ -72,10 +72,4 @@ public class QuestionServiceImpl implements QuestionService{
         Question question = questionRepository.findById(id).get();
         questionRepository.delete(question);
     }
-
-    @Override
-    public Question findById(Long id) {
-        return questionRepository.findById(id).get();
-    }
-
 }
