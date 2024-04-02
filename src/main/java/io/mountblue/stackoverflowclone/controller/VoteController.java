@@ -1,8 +1,7 @@
 package io.mountblue.stackoverflowclone.controller;
 
-import io.mountblue.stackoverflowclone.service.VoteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import io.mountblue.stackoverflowclone.service.VoteService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 

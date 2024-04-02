@@ -1,7 +1,9 @@
 package io.mountblue.stackoverflowclone.controller;
 
 import io.mountblue.stackoverflowclone.entity.Question;
+import io.mountblue.stackoverflowclone.entity.View;
 import io.mountblue.stackoverflowclone.service.QuestionService;
+import io.mountblue.stackoverflowclone.service.ViewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +14,11 @@ import java.util.List;
 @Controller
 public class QuestionController {
     private final QuestionService questionService;
+    private final ViewService viewService;
 
-    public QuestionController(QuestionService questionService) {
+    public QuestionController(QuestionService questionService, ViewService viewService) {
         this.questionService = questionService;
+        this.viewService = viewService;
     }
     @GetMapping({"/allQuestions", "/"})
     public String showAllQuestions(Model model){
@@ -67,6 +71,11 @@ public class QuestionController {
         return "redirect:/allQuestions";
     }
 
+    @GetMapping("/askQuestion")
+    public String showAskQuestionForm(Model model){
+        model.addAttribute("question", new Question());
+        return "add-question";
+    }
     @GetMapping("/deleteQuestion/{questionId}")
     public String deleteQuestion(@PathVariable("questionId") Long id){
         questionService.deleteQuestion(id);
@@ -98,4 +107,21 @@ public class QuestionController {
         model.addAttribute("tagSearch", tagSearch);
         return "all-question";
     }
+
+    @GetMapping("/showQuestion/{questionId}")
+    public String showQuestion(@PathVariable("questionId") Long id, Model model){
+        Question question = questionService.findById(id);
+        View view = viewService.findByUserAndQuestion(/*User user,*/ question);
+        if(view == null){
+            view = new View();
+            view.setQuestion(question);
+//            view.setUser(user);
+            viewService.save(view);
+            question.setViewCount(question.getViewCount() + 1);
+            questionService.save(question);
+        }
+        model.addAttribute("question", question);
+        return "show-question";
+    }
+
 }

@@ -2,7 +2,6 @@ package io.mountblue.stackoverflowclone.service;
 
 import io.mountblue.stackoverflowclone.entity.Answer;
 import io.mountblue.stackoverflowclone.repository.AnswerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
