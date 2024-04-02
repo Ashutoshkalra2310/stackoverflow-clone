@@ -35,8 +35,8 @@ public class AnswerServiceImpl implements AnswerService{
         answer.setUser(user);
         answerRepository.save(answer);
     }
-    public void updateAnswer(Long id,Answer updatedAnswer) {
-        Answer prevAnswer=answerRepository.findById(id).get();
+    public void updateAnswer(Answer updatedAnswer) {
+        Answer prevAnswer=answerRepository.findById(updatedAnswer.getId()).get();
         prevAnswer.setContent(updatedAnswer.getContent());
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

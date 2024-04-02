@@ -102,6 +102,7 @@ public class QuestionController {
         Question question = questionService.findById(id);
         model.addAttribute("question", question);
         model.addAttribute("Comment", new Comment());
+        model.addAttribute("answer", new Answer());
         return "showQuestion";
     }
 
