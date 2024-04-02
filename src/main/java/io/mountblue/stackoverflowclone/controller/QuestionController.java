@@ -98,4 +98,13 @@ public class QuestionController {
         model.addAttribute("tagSearch", tagSearch);
         return "all-question";
     }
+
+    @GetMapping("/searchQuestion")
+    public String searchQuestion(@RequestParam(value = "keyword", required = false) String keyword,
+                                 @RequestParam(value = "username", required = false) String username,
+                                 Model model) {
+        List<Question> searchResults = questionService.search(keyword, username);
+        model.addAttribute("searchResults", searchResults);
+        return "search-results";
+    }
 }
