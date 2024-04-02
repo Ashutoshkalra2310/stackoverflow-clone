@@ -9,19 +9,16 @@
 <div class="container mt-4" >
     <h1>Ask a Public Question</h1>
     <form action="#" th:action="@{/reviewQuestion}" method="GET" th:object="${question}" th:class="${showTitle}">
-            <div class="form-group">
-                <label for="questionTitle">Title</label>
-                <p>Be specific and imagine you are asking a question to another person.</p>
-                <input type="text" class="form-control" id="questionTitle" th:field="*{title}" th:value="*{title}" placeholder="Enter your question title" >
-            </div>
-            <br>
-        <input type="hidden" th:field="*{content}">
-        <input type="hidden" th:each="tag : ${tags}" th:name="${tag.name}" th:field="${tag.name}" th:value="${tag.name}">
-
+        <div class="form-group">
+            <label for="questionTitle">Title</label>
+            <p>Be specific and imagine you are asking a question to another person.</p>
+            <input type="text" class="form-control" id="questionTitle" th:field="*{title}" th:value="*{title}" placeholder="Enter your question title" >
+        </div>
+        <br>
         <div class="form-group" >
             <label>What are the details of your problem?</label>
             <p>Introduce the problem and expand on what you want to put in the title. Minimum 20 characters.</p>
-            <textarea class="form-control" id="detailedProblem" th:name="${detailedProblem}"  th:value="${detailedProblem}" th:text="${detailedProblem}" rows="6" placeholder="Enter details about your question" ></textarea>
+            <textarea class="form-control" id="detailedProblem" name="detailedProblem"  th:value="${detailedProblem}" th:text="${detailedProblem}" rows="6" placeholder="Enter details about your question" ></textarea>
             <script>
                 tinymce.init({
                     selector: '#detailedProblem',
@@ -40,8 +37,8 @@
         <div class="form-group">
             <label>What did you try and what were you expecting?</label>
             <p>Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters</p>
-            <textarea class="form-control" id="expectingResults" th:name="${expectingResults}"
-                      th:value="${expectingResults}" th:text="${expectingResults}" placeholder="Enter details about your question" rows="6"></textarea>
+            <textarea class="form-control" id="expectingResults" name="expectingResults"
+                      th:value="${expectingResults}" th:text="${expectingResults}" placeholder="Enter details about your question" required rows="6"></textarea>
             <script>
                 tinymce.init({
                     selector: '#expectingResults',

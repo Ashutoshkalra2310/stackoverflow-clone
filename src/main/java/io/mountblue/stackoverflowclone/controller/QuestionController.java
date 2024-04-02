@@ -36,20 +36,11 @@ public class QuestionController {
         return "all-question";
     }
     @GetMapping("/addQuestion")
-    public String addQuestion(Model model,
-                               @RequestParam(value = "detailedProblem", required = false) String detailedProblem,
-                               @RequestParam(value = "expectingResults", required = false) String expectingResults,
-                               @RequestParam(value = "tagList", required = false) String tags,
-                               @ModelAttribute(value = "question") Question question
-                               ){
-        if(question == null) {
-            question = new Question();
-        }
-
-        model.addAttribute("detailedProblem", detailedProblem == null ? "" : detailedProblem);
-        model.addAttribute("expectingResults", expectingResults == null ? "" : expectingResults);
-        model.addAttribute("tagList", tags == null ? "" : tags);
-        model.addAttribute("question", question);
+    public String addQuestion(Model model){
+        model.addAttribute("detailedProblem", "");
+        model.addAttribute("expectingResults", "");
+        model.addAttribute("tagList", "");
+        model.addAttribute("question", new Question());
         return "add-question";
     }
 
@@ -92,10 +83,10 @@ public class QuestionController {
     public String showQuestion(Model model,@PathVariable("questionId") Long id){
         Question question = questionService.findById(id);
         model.addAttribute(question);
-        return "question";
+        return "showQuestion";
     }
 
-    @GetMapping("/filter")
+    @GetMapping("/filters")
     public String filterQuestions(@RequestParam(name = "noAnswer", required = false, defaultValue = "false") boolean noAnswer,
                                   @RequestParam(name = "noAcceptedAnswer", required = false, defaultValue = "false") boolean noAcceptedAnswer,
                                   @RequestParam(name = "newest", required = false, defaultValue = "false") boolean newest,
