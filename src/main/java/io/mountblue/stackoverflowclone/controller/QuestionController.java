@@ -5,6 +5,7 @@ import io.mountblue.stackoverflowclone.entity.Tag;
 import io.mountblue.stackoverflowclone.entity.View;
 import io.mountblue.stackoverflowclone.service.QuestionService;
 import io.mountblue.stackoverflowclone.entity.Tag;
+import io.mountblue.stackoverflowclone.service.TagService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,10 @@ import java.util.Set;
 @Controller
 public class QuestionController {
     private final QuestionService questionService;
-
-    public QuestionController(QuestionService questionService) {
+    private final TagService tagService;
+    public QuestionController(QuestionService questionService, TagService tagService) {
         this.questionService = questionService;
+        this.tagService = tagService;
     }
     @GetMapping({"/allQuestions", "/"})
     public String showAllQuestions(Model model){
@@ -111,5 +113,15 @@ public class QuestionController {
         model.addAttribute("recentActivity", recentActivity);
         model.addAttribute("tagSearch", tagSearch);
         return "all-question";
+    }
+    @GetMapping("/homepage")
+    public String homepage(){
+        return "home-page";
+    }
+    @GetMapping("/taglist")
+    public String tag(Model model){
+        List<Tag> tags =tagService.findAll();
+        model.addAttribute("tags", tags);
+        return "tags-list";
     }
 }

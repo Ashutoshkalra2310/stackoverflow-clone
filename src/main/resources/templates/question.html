@@ -208,6 +208,7 @@
             align-items:center;
             justify-content:space-evenly;
             width: 236px;
+            text-decoration:none;
         }
         .filter{
             background-color: rgba(0,0,0,0.2);
@@ -349,8 +350,8 @@
         />
     </form>
     <div class="login-btns">
-        <a class="login-button">Login</a>
-        <a class="signup-button">Sign Up</a>
+        <a th:href="@{/loginpage}"  class="login-button">Login</a>
+        <a th:href="@{/registerpage}"  class="signup-button">Sign Up</a>
     </div>
 </div>
 </div>
@@ -358,8 +359,8 @@
     <div class="sidebar">
         <a href="#" class="logo"></a>
         <ul class="menu">
-            <li class="menu-item"><a href="#" class="menu-link">Questions</a></li>
-            <li class="menu-item"><a href="#" class="menu-link">Tags</a></li>
+            <li class="menu-item"><a href="#" th:href="@{/homepage}" class="menu-link">HomePage</a></li>
+            <li class="menu-item"><a href="#" th:href="@{/taglist}" class="menu-link">Tags</a></li>
             <li class="menu-item"><a href="#" class="menu-link">Users</a></li>
         </ul>
     </div>
