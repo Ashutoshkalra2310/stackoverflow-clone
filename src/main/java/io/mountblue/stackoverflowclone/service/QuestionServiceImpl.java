@@ -26,7 +26,6 @@ public class QuestionServiceImpl implements QuestionService{
     @Override
     public void save(Question question, String tagList) {
         String[] newTagNames = tagList.trim().split(",");
-        System.out.println(newTagNames);
         List<Tag> existingTags = tagService.findAll();
         Map<String, Tag> allTagsByName = new HashMap<>();
         for (Tag tag : existingTags) {
@@ -37,10 +36,8 @@ public class QuestionServiceImpl implements QuestionService{
             Tag tag = allTagsByName.get(tagName.trim());
             if (tag == null) {
                 tag = new Tag(tagName.trim());
-                System.out.println(tag);
             }
             updatedTags.add(tag);
-            System.out.println(tagName);
         }
         question.setTags(updatedTags);
         question.setUpdatedAt(LocalDateTime.now());
@@ -59,25 +56,11 @@ public class QuestionServiceImpl implements QuestionService{
     @Override
     public List<Question> filterQuestion(boolean noAnswer, boolean noAcceptedAnswer, boolean newest, boolean oldest, boolean recentActivity, String tagSearch) {
         List<Question> filteredQuestions;
-
-        if (noAnswer) {
-            filteredQuestions = questionRepository.findByIsAnsweredFalse();
-        } else if (noAcceptedAnswer) {
-            filteredQuestions = questionRepository.findByAnswersIsNull();
-        } else if (newest) {
-            filteredQuestions = questionRepository.findByOrderByCreatedAtDesc();
-        } else if (oldest) {
-            filteredQuestions = questionRepository.findByOrderByCreatedAtAsc();
-        } else if (recentActivity) {
-            filteredQuestions = questionRepository.findByOrderByUpdatedAtDesc();
-        } else {
+        if(!noAnswer && !noAcceptedAnswer && !newest && !oldest && !recentActivity && tagSearch.isEmpty()){
             filteredQuestions = questionRepository.findAll();
+        } else {
+            filteredQuestions = questionRepository.filterQuestions(noAnswer, noAcceptedAnswer, newest, oldest, recentActivity, tagSearch);
         }
-
-        if (tagSearch != null && !tagSearch.isEmpty()) {
-            filteredQuestions = questionRepository.findByTagsNameContainingIgnoreCase(tagSearch);
-        }
-
         return filteredQuestions;
     }
 
