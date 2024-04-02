@@ -38,7 +38,7 @@
             <label>What did you try and what were you expecting?</label>
             <p>Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters</p>
             <textarea class="form-control" id="expectingResults" name="expectingResults"
-                      th:value="${expectingResults}" th:text="${expectingResults}" placeholder="Enter details about your question" rows="6"></textarea>
+                      th:value="${expectingResults}" th:text="${expectingResults}" placeholder="Enter details about your question" required rows="6"></textarea>
             <script>
                 tinymce.init({
                     selector: '#expectingResults',

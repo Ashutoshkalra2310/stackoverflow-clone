@@ -43,7 +43,7 @@ public class QuestionController {
                                  @RequestParam("tagList") String tags,
                                  @RequestParam(value = "detailedProblem", required = false) String detailedProblem,
                                  @RequestParam(value = "expectingResults", required = false) String expectingResults
-            ,Model model){
+                                 ,Model model){
         if(detailedProblem != null){
             question.setContent(detailedProblem);
         }
