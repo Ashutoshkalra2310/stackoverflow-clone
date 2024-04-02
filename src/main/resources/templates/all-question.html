@@ -273,25 +273,30 @@
             <h1>Top Questions</h1>
             <button href="#">Ask Question</button>
         </div>
-        <form action="#" method="get" class="form">
+        <form action="#" th:action="@{/filter}" method="get" class="form">
         <div class="filter">
             <div>
                 <h3 >Filter By:</h3>
-                <label for="noAnswerCheckbox" ><input type="checkbox" style="margin-right: 5px;" id="noAnswerCheckbox">No Answer</label>
+                <label for="noAnswerCheckbox" ><input type="checkbox" th:checked="${noAnswer}"
+                                                      name="noAnswer" id="noAnswerCheckbox">No Answer</label>
                 <br>
-                <label for="noAcceptedAnswerCheckbox" ><input type="checkbox" style="margin-right: 5px;" id="noAcceptedAnswerCheckbox">No Accepted Answer</label>
+                <label for="noAcceptedAnswerCheckbox" ><input type="checkbox" style="margin-right: 5px;" th:checked="${noAcceptedAnswer}"
+                                                              name="noAcceptedAnswer" id="noAcceptedAnswerCheckbox">No Accepted Answer</label>
             </div>
             <div>
                 <h3 >Sort By:</h3>
-                <label ><input type="checkbox" style="margin-right: 5px;" id="newestCheckbox">Newest</label>
+                <label ><input type="checkbox" th:checked="${newest}" name="newest" id="newestCheckbox">Newest</label>
                 <br>
-                <label for="oldestCheckbox" ><input type="checkbox" style="margin-right: 5px;" id="oldestCheckbox">Oldest</label>
+                <label for="oldestCheckbox" ><input type="checkbox" style="margin-right: 5px;" th:checked="${oldest}"
+                                                    name="oldest" id="oldestCheckbox">Oldest</label>
                 <br>
-                <label for="recentActivityCheckbox" ><input type="checkbox" style="margin-right: 5px;" id="recentActivityCheckbox">Recent Activity</label>
+                <label for="recentActivityCheckbox" ><input type="checkbox" th:checked="${recentActivity}"
+                                                            name="recentActivity" id="recentActivityCheckbox">Recent Activity</label>
             </div>
             <div>
                 <h3 >Tag:</h3>
-                    <input type="text" name="tagSearch" class="search-input" style="margin-top: 20px;" placeholder="Search Tags...">
+                    <input type="text" name="tagSearch" th:value="${tagSearch}"
+                           class="search-input" style="margin-top: 20px;" placeholder="Search Tags...">
             </div>
         </div>
             <button type="submit" style="height: 46px; width: 138px; color:white; background-color:#0e79ea; border:none; border-radius:7px; font-weight: 700; cursor:pointer;">Filter</button>

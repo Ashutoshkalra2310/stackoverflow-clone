@@ -25,6 +25,12 @@ public class QuestionController {
     public String showQuestions(Model model){
         List<Question> questions =  questionService.getAllQuestions();
         model.addAttribute("questions", questions);
+        model.addAttribute("noAnswer", false);
+        model.addAttribute("noAcceptedAnswer", false);
+        model.addAttribute("newest", false);
+        model.addAttribute("oldest", false);
+        model.addAttribute("recentActivity", false);
+        model.addAttribute("tagSearch", "");
         return "all-question";
     }
     @GetMapping("/question")
@@ -106,5 +112,25 @@ public class QuestionController {
     public String deleteQuestion(@PathVariable("questionId") Long id){
         questionService.deleteQuestion(id);
         return "redirect:show-question";
+    }
+
+    @GetMapping("/filter")
+    public String filterQuestions(@RequestParam(name = "noAnswer", required = false, defaultValue = "false") boolean noAnswer,
+                                  @RequestParam(name = "noAcceptedAnswer", required = false, defaultValue = "false") boolean noAcceptedAnswer,
+                                  @RequestParam(name = "newest", required = false, defaultValue = "false") boolean newest,
+                                  @RequestParam(name = "oldest", required = false, defaultValue = "false") boolean oldest,
+                                  @RequestParam(name = "recentActivity", required = false, defaultValue = "false") boolean recentActivity,
+                                  @RequestParam(name = "tagSearch", required = false) String tagSearch,
+                                  Model model){
+
+        List<Question> questions = questionService.filterQuestion(noAnswer, noAcceptedAnswer, newest, oldest, recentActivity, tagSearch);
+        model.addAttribute("questions", questions);
+        model.addAttribute("noAnswer", noAnswer);
+        model.addAttribute("noAcceptedAnswer", noAcceptedAnswer);
+        model.addAttribute("newest", newest);
+        model.addAttribute("oldest", oldest);
+        model.addAttribute("recentActivity", recentActivity);
+        model.addAttribute("tagSearch", tagSearch);
+        return "all-question";
     }
 }

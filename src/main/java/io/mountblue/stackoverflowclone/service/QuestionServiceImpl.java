@@ -29,6 +29,31 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
+    public List<Question> filterQuestion(boolean noAnswer, boolean noAcceptedAnswer, boolean newest, boolean oldest, boolean recentActivity, String tagSearch) {
+        List<Question> filteredQuestions;
+
+        if (noAnswer) {
+            filteredQuestions = questionRepository.findByIsAnsweredFalse();
+        } else if (noAcceptedAnswer) {
+            filteredQuestions = questionRepository.findByAnswersIsNull();
+        } else if (newest) {
+            filteredQuestions = questionRepository.findByOrderByCreatedAtDesc();
+        } else if (oldest) {
+            filteredQuestions = questionRepository.findByOrderByCreatedAtAsc();
+        } else if (recentActivity) {
+            filteredQuestions = questionRepository.findByOrderByUpdatedAtDesc();
+        } else {
+            filteredQuestions = questionRepository.findAll();
+        }
+
+        if (tagSearch != null && !tagSearch.isEmpty()) {
+            filteredQuestions = questionRepository.findByTagsNameContainingIgnoreCase(tagSearch);
+        }
+
+        return filteredQuestions;
+    }
+
+    @Override
     public List<Question> getAllQuestions() {
         return questionRepository.findAll();
     }
