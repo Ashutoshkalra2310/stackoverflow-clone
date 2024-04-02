@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,11 +21,11 @@ public class User {
     private String email;
     private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Question> questions;
+    private List<Question> questions;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Answer> answers;
+    private List<Answer> answers;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Vote> votes;
+    private List<Vote> votes;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Comment> comments;
+    private List<Comment> comments;
 }

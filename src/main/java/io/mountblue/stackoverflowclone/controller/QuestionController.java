@@ -22,20 +22,16 @@ public class QuestionController {
         this.questionService = questionService;
     }
     @GetMapping({"/allQuestions", "/"})
-    public String showQuestions(Model model){
+    public String showAllQuestions(Model model){
         List<Question> questions =  questionService.getAllQuestions();
         model.addAttribute("questions", questions);
         return "all-question";
     }
-    @GetMapping("/question")
-    public String showQuestion(Model model,
+    @GetMapping("/addQuestion")
+    public String addQuestion(Model model,
                                @RequestParam(value = "detailedProblem", required = false) String detailedProblem,
                                @RequestParam(value = "expectingResults", required = false) String expectingResults,
                                @RequestParam(value = "tagList", required = false) String tags,
-//                               @RequestParam(value = "showTitle", required = false) String showTitle,
-//                               @RequestParam(value = "showDetailedProblem", required = false) String showDetailedProblem,
-//                               @RequestParam(value = "showExpectingResults", required = false) String showExpectingResults,
-//                               @RequestParam(value = "showTags", required = false) String showTags,
                                @ModelAttribute(value = "question") Question question
                                ){
 
@@ -48,31 +44,31 @@ public class QuestionController {
         }
         if(expectingResults != null){
             String content = question.getContent();
-            content=content + "<br><br>" + expectingResults;
+            content=content + "<br>" + expectingResults;
             question.setContent(content);
-        }
-        model.addAttribute("saveQ", false);
-        if(tags != null && !tags.isEmpty() && expectingResults != null &&
-                !expectingResults.isEmpty() && detailedProblem != null && !detailedProblem.isEmpty()){
-            model.addAttribute("saveQ", true);
-
         }
         model.addAttribute("detailedProblem", detailedProblem == null ? "" : detailedProblem);
         model.addAttribute("expectingResults", expectingResults == null ? "" : expectingResults);
         model.addAttribute("tagList", tags == null ? "" : tags);
-//        model.addAttribute("showTitle",true);
-//        model.addAttribute("showDetailedProblem", true);
-//        model.addAttribute("showExpectingResults", true);
-//        model.addAttribute("showTags", true);
-        model.addAttribute("question", question);
+      model.addAttribute("question", question);
         return "add-question";
     }
 
 
     @GetMapping("/reviewQuestion")
     public String reviewQuestion(@ModelAttribute("question") Question question,
-                                 @RequestParam("tagList") String tags
-                                 ,Model model){
+                                 @RequestParam("tagList") String tags,
+                                 @RequestParam(value = "detailedProblem", required = false) String detailedProblem,
+                                 @RequestParam(value = "expectingResults", required = false) String expectingResults
+            ,Model model){
+        if(detailedProblem != null){
+            question.setContent(detailedProblem);
+        }
+        if(expectingResults != null){
+            String content = question.getContent();
+            content=content + "<br>" + expectingResults;
+            question.setContent(content);
+        }
         model.addAttribute("question", question);
         model.addAttribute("tagList", tags);
         return "review-question";
@@ -82,29 +78,21 @@ public class QuestionController {
         if(question.getId() != null){
             questionService.updateQuestion(question, tags);
         }
-        if(tags != null && !tags.isEmpty()){
-            String[] tagsArray = tags.split(",");
-            Set<Tag> tagList = new HashSet<>();
-            for(String tagString : tagsArray){
-                tagString = tagString.trim();
-                Tag newTag = new Tag();
-                newTag.setName(tagString);
-                tagList.add(newTag);
-            }
-            question.setTags(tagList);
+        else {
+            questionService.save(question, tags);
         }
-        questionService.save(question);
-        return "redirect:/question";
+        return "redirect:/allQuestions";
     }
 
-    @GetMapping("/askQuestion")
-    public String showAskQuestionForm(Model model){
-        model.addAttribute("question", new Question());
-        return "add-question";
-    }
     @GetMapping("/deleteQuestion/{questionId}")
     public String deleteQuestion(@PathVariable("questionId") Long id){
         questionService.deleteQuestion(id);
-        return "redirect:show-question";
+        return "redirect:/allQuestions";
+    }
+    @GetMapping("/question/{questionId}")
+    public String showQuestion(Model model,@PathVariable("questionId") Long id){
+        Question question = questionService.findById(id);
+        model.addAttribute(question);
+        return "question";
     }
 }

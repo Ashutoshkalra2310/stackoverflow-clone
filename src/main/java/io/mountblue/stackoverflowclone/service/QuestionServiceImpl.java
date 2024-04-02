@@ -24,6 +24,34 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
+    public void save(Question question, String tagList) {
+        String[] newTagNames = tagList.trim().split(",");
+        System.out.println(newTagNames);
+        List<Tag> existingTags = tagService.findAll();
+        Map<String, Tag> allTagsByName = new HashMap<>();
+        for (Tag tag : existingTags) {
+            allTagsByName.put(tag.getName(), tag);
+        }
+        List<Tag> updatedTags = new ArrayList<>();
+        for (String tagName : newTagNames) {
+            Tag tag = allTagsByName.get(tagName.trim());
+            if (tag == null) {
+                tag = new Tag(tagName.trim());
+                System.out.println(tag);
+            }
+            updatedTags.add(tag);
+            System.out.println(tagName);
+        }
+        question.setTags(updatedTags);
+        question.setUpdatedAt(LocalDateTime.now());
+        question.setCreatedAt(LocalDateTime.now());
+        question.setIsAnswered(Boolean.FALSE);
+        question.setViewCount(0L);
+        question.setVoteCount(0L);
+        questionRepository.save(question);
+    }
+
+    @Override
     public void save(Question question) {
         questionRepository.save(question);
     }
@@ -39,13 +67,16 @@ public class QuestionServiceImpl implements QuestionService{
         oldQuestion.setTitle(updatedQuestion.getTitle());
         oldQuestion.setContent(updatedQuestion.getContent());
         oldQuestion.setUpdatedAt(LocalDateTime.now());
-        String[] updatedTagNames = tagList.trim().split(",");
+        String[] updatedTagNames = tagList.split(",");
+        for (int i = 0; i < updatedTagNames.length; i++) {
+            updatedTagNames[i] = updatedTagNames[i].trim();
+        }
         List<Tag> existingTags = tagService.findAll();
         Map<String, Tag> existingTagsByName = new HashMap<>();
         for (Tag tag : existingTags) {
             existingTagsByName.put(tag.getName(), tag);
         }
-        Set<Tag> updatedTags = new HashSet<>();
+        List<Tag> updatedTags = new ArrayList<>();
         for (String tagName : updatedTagNames) {
             Tag tag = existingTagsByName.get(tagName.trim());
             if (tag == null) {
@@ -53,8 +84,8 @@ public class QuestionServiceImpl implements QuestionService{
             }
             updatedTags.add(tag);
         }
-        Set<Tag> tagsToAdd = new HashSet<>(updatedTags);
-        Set<Tag> tagsToRemove = new HashSet<>(existingTags);
+        List<Tag> tagsToAdd = new ArrayList<>(updatedTags);
+        List<Tag> tagsToRemove = new ArrayList<>(existingTags);
         tagsToRemove.removeAll(updatedTags);
         oldQuestion.getTags().addAll(tagsToAdd);
         oldQuestion.getTags().removeAll(tagsToRemove);
@@ -72,5 +103,6 @@ public class QuestionServiceImpl implements QuestionService{
     public Question findById(Long id) {
         return questionRepository.findById(id).get();
     }
+
 
 }

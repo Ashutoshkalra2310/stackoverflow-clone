@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,7 +20,7 @@ public class Tag {
     String name;
     String description;
     @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
-    private Set<Question> questions;
+    private List<Question> questions;
 
     @Override
     public String toString() {
@@ -32,5 +33,6 @@ public class Tag {
     }
 
     public Tag(String trim) {
+        this.name = trim;
     }
 }

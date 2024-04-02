@@ -29,7 +29,7 @@ public class Question {
     @JoinColumn(name = "user_id")
     private User user;
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    private Set<Answer> answers;
+    private List<Answer> answers;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id")
     List<Comment> comments;
@@ -37,6 +37,6 @@ public class Question {
     @JoinTable(name = "question_tags",
             joinColumns = @JoinColumn(name = "question_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private Set<Tag> tags;
+    private List<Tag> tags;
 
 }
