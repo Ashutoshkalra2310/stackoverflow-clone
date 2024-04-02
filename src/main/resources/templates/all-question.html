@@ -278,21 +278,41 @@
             <div>
                 <h3 >Filter By:</h3>
                 <label for="noAnswerCheckbox" ><input type="checkbox" th:checked="${noAnswer}"
-                                                      name="noAnswer" id="noAnswerCheckbox">No Answer</label>
+                                                      name="noAnswer" id="noAnswerCheckbox" >No Answer</label>
                 <br>
                 <label for="noAcceptedAnswerCheckbox" ><input type="checkbox" style="margin-right: 5px;" th:checked="${noAcceptedAnswer}"
-                                                              name="noAcceptedAnswer" id="noAcceptedAnswerCheckbox">No Accepted Answer</label>
+                                                              name="noAcceptedAnswer" id="noAcceptedAnswerCheckbox" >No Accepted Answer</label>
             </div>
+
             <div>
-                <h3 >Sort By:</h3>
-                <label ><input type="checkbox" th:checked="${newest}" name="newest" id="newestCheckbox">Newest</label>
+                <h3>Sort By:</h3>
+                <label>
+                    <input type="radio" name="sortBy" id="newestCheckbox" th:checked="${newest}" onclick="uncheckOtherRadios('newestCheckbox')">
+                    Newest
+                </label>
                 <br>
-                <label for="oldestCheckbox" ><input type="checkbox" style="margin-right: 5px;" th:checked="${oldest}"
-                                                    name="oldest" id="oldestCheckbox">Oldest</label>
+                <label for="oldestCheckbox">
+                    <input type="radio" name="sortBy" id="oldestCheckbox" th:checked="${oldest}" onclick="uncheckOtherRadios('oldestCheckbox')">
+                    Oldest
+                </label>
                 <br>
-                <label for="recentActivityCheckbox" ><input type="checkbox" th:checked="${recentActivity}"
-                                                            name="recentActivity" id="recentActivityCheckbox">Recent Activity</label>
+                <label for="recentActivityCheckbox">
+                    <input type="radio" name="sortBy" id="recentActivityCheckbox" th:checked="${recentActivity}" onclick="uncheckOtherRadios('recentActivityCheckbox')">
+                    Recent Activity
+                </label>
             </div>
+
+            <script>
+                function uncheckOtherRadios(clickedRadioId) {
+                    var radios = document.querySelectorAll('input[type="radio"][name="sortBy"]');
+                    radios.forEach(function(radio) {
+                        if (radio.id !== clickedRadioId) {
+                            radio.checked = false;
+                        }
+                    });
+                }
+            </script>
+
             <div>
                 <h3 >Tag:</h3>
                     <input type="text" name="tagSearch" th:value="${tagSearch}"

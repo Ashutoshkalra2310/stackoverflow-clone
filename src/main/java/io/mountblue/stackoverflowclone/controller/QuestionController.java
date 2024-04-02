@@ -40,23 +40,14 @@ public class QuestionController {
                                @RequestParam(value = "tagList", required = false) String tags,
                                @ModelAttribute(value = "question") Question question
                                ){
-
         if(question == null) {
             question = new Question();
         }
 
-        if(detailedProblem != null){
-            question.setContent(detailedProblem);
-        }
-        if(expectingResults != null){
-            String content = question.getContent();
-            content=content + "<br>" + expectingResults;
-            question.setContent(content);
-        }
         model.addAttribute("detailedProblem", detailedProblem == null ? "" : detailedProblem);
         model.addAttribute("expectingResults", expectingResults == null ? "" : expectingResults);
         model.addAttribute("tagList", tags == null ? "" : tags);
-      model.addAttribute("question", question);
+        model.addAttribute("question", question);
         return "add-question";
     }
 
@@ -66,7 +57,7 @@ public class QuestionController {
                                  @RequestParam("tagList") String tags,
                                  @RequestParam(value = "detailedProblem", required = false) String detailedProblem,
                                  @RequestParam(value = "expectingResults", required = false) String expectingResults
-            ,Model model){
+                                 ,Model model){
         if(detailedProblem != null){
             question.setContent(detailedProblem);
         }
