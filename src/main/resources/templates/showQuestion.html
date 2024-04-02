@@ -427,9 +427,9 @@
             </div>
 
             <!-- Add comment form -->
-            <form th:action="@{/addComment}" method="post">
+            <form th:action="@{'/comment/'+${question.id}}" th:object="${Comment}" method="post">
                 <input type="hidden" name="questionId" th:value="${question.id}">
-                <textarea name="content" placeholder="Enter your comment"></textarea>
+                <textarea name="content" th:field="${Comment.comment}"  placeholder="Enter your comment"></textarea>
                 <button type="submit">Add Comment</button>
             </form>
         </div>

@@ -1,6 +1,7 @@
 package io.mountblue.stackoverflowclone.controller;
 
 import io.mountblue.stackoverflowclone.entity.*;
+import io.mountblue.stackoverflowclone.service.CommentService;
 import io.mountblue.stackoverflowclone.service.QuestionService;
 import io.mountblue.stackoverflowclone.entity.Tag;
 import io.mountblue.stackoverflowclone.service.TagService;
@@ -19,10 +20,12 @@ public class QuestionController {
     private final QuestionService questionService;
     private final TagService tagService;
     private final UserService userService;
-    public QuestionController(QuestionService questionService, TagService tagService, UserService userService) {
+    private final CommentService commentService;
+    public QuestionController(QuestionService questionService, TagService tagService, UserService userService, CommentService commentService) {
         this.questionService = questionService;
         this.tagService = tagService;
         this.userService = userService;
+        this.commentService = commentService;
     }
     @GetMapping({"/allQuestions", "/"})
     public String showAllQuestions(Model model){
@@ -84,6 +87,7 @@ public class QuestionController {
     public String showQuestion(Model model,@PathVariable("questionId") Long id){
         Question question = questionService.findById(id);
         model.addAttribute(question);
+        model.addAttribute("Comment", new Comment());
         return "showQuestion";
     }
 

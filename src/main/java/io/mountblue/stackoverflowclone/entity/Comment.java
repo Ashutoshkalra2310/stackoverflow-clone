@@ -30,4 +30,16 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", comment='" + comment + '\'' +
+                ", publishedAt='" + publishedAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", question=" + question +
+                ", answer=" + answer +
+                ", user=" + user +
+                '}';
+    }
 }

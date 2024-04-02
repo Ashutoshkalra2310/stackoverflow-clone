@@ -33,4 +33,9 @@ public class AnswerServiceImpl implements AnswerService{
     public void deleteAnswer(Long id) {
         answerRepository.deleteById(id);
     }
+
+    @Override
+    public Answer findById(Long id) {
+        return answerRepository.findById(id).orElse(null);
+    }
 }
