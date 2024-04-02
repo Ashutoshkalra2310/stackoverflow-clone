@@ -339,7 +339,7 @@
             font-size: 20px;
             padding: 10px 28px;
             color:white;
-            border:none:
+            border:none;
             border-radius:4px;
             font-weight:700;
         }
@@ -445,21 +445,20 @@
                         <button class="upvote" onclick="">
                             <svg aria-hidden="true" class="svg-icon iconArrowUp" width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z"></path></svg>
                         </button>
-                        <b th:text="${answer.voteCount}"></b>
+<!--                        <b th:text="${answer.voteCount}"></b>-->
                         <button class="downvote" onclick="">
                             <svg aria-hidden="true" class="svg-icon iconArrowDown" width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z"></path></svg>
                         </button>
                     </div>
-                    <div th:text="${answer.content}"></div>
+                    <div th:utext="${answer.content}"></div>
                 </div>
                 <!-- Answer features (created at, updated at, votes) -->
                 <div class="answer-features">
-                    <p>Created at: <span th:text="${answer.createdAt}"></span></p>
                     <p>Updated at: <span th:text="${answer.updatedAt}"></span></p>
-                    <p>Votes: <span th:text="${answer.voteCount}"></span></p>
+<!--                    <p>Votes: <span th:text="${answer.voteCount}"></span></p>-->
                     <div class="buttons">
                         <a ><button style="border:none; border-radius:4px;font-weight:700;background-color:orange" type="submit">Update</button></a>
-                        <a ><button style="background-color:red; border:none; border-radius:4px; font-weight:700 " type="submit">Delete</button></a>
+                        <a th:href="@{'/deleteAnswer/' + ${answer.id} + '/' + ${questionId}}"><button style="background-color:red; border:none; border-radius:4px; font-weight:700 " type="submit">Delete</button></a>
                     </div>
                 </div>
 <!--                <p>Author : <span th:text="${answer.user.name}"></span></p>-->
@@ -481,7 +480,7 @@
                 </form>
             </div>
             <!-- Add answer form -->
-            <form th:action="@{/addAnswer}" method="post">
+            <form th:action="@{/saveAnswer}" method="post">
                 <input type="hidden" name="questionId" th:value="${question.id}">
                 <textarea id="content" name="content" placeholder="Enter your answer"></textarea>
                 <script>

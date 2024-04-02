@@ -3,10 +3,7 @@ package io.mountblue.stackoverflowclone.controller;
 import io.mountblue.stackoverflowclone.entity.Answer;
 import io.mountblue.stackoverflowclone.service.AnswerService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class AnswerController {
@@ -16,9 +13,10 @@ public class AnswerController {
     }
 
     @PostMapping("/saveAnswer")
-    public String saveAnswer(@ModelAttribute("answer") Answer answer){
-        answerService.saveAnswer(answer);
-        return "redirect:show-question";
+    public String saveAnswer(@ModelAttribute("answer") Answer answer,
+                             @RequestParam("questionId") Long questionId){
+        answerService.saveAnswer(answer, questionId);
+        return "redirect:/question/" + questionId;
     }
 
     @PostMapping("/updateAnswer/{answerId}")
@@ -27,10 +25,11 @@ public class AnswerController {
         return "redirect:show-question";
     }
 
-    @GetMapping("/deleteAnswer/{answerId}")
-    public String deleteAnswer(@PathVariable("answerId") Long id){
+    @GetMapping("/deleteAnswer/{answerId}/{questionId}")
+    public String deleteAnswer(@PathVariable("answerId") Long id,
+                               @PathVariable("questionId") Long questionId){
         answerService.deleteAnswer(id);
-        return "redirect:show-question";
+        return "redirect:/question/" + questionId;
     }
 
 }

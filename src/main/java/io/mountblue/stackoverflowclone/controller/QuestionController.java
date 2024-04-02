@@ -83,7 +83,7 @@ public class QuestionController {
     @GetMapping("/question/{questionId}")
     public String showQuestion(Model model,@PathVariable("questionId") Long id){
         Question question = questionService.findById(id);
-        model.addAttribute(question);
+        model.addAttribute("question", question);
         return "showQuestion";
     }
 
