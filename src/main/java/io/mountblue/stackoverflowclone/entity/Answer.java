@@ -22,6 +22,7 @@ public class Answer {
     private String publishedAt;
     private String updatedAt;
     private Boolean isCorrectAnswer;
+    private Long voteCount;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "question_id")
     private Question question;

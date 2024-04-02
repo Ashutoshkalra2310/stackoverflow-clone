@@ -33,13 +33,12 @@ public class CommentServiceImpl implements CommentService{
         String formattedDateTime = localDateTime.format(dateTimeFormatter);
         comment.setUpdatedAt(formattedDateTime);
         question.setComments(comments);
-        questionService.save(question);
         comment.setQuestion(question);
-        commentRepository.save(comment);
+        questionService.save(question);
     }
 
     @Override
-    public void updateQuestionComment(Comment comment, Long questionId) {
+    public void updateQuestionComment(Comment comment) {
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = localDateTime.format(dateTimeFormatter);
@@ -50,6 +49,11 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public void deleteComment(Comment comment) {
         commentRepository.delete(comment);
+    }
+
+    @Override
+    public Comment findById(Long commentId) {
+        return commentRepository.findById(commentId).get();
     }
 
     public void saveAnswerComment(Comment comment, Long answerId) {
@@ -63,10 +67,9 @@ public class CommentServiceImpl implements CommentService{
         answer.setComments(comments);
         comment.setAnswer(answer);
         commentRepository.save(comment);
-        answerService.saveAnswer(answer);
+        answerService.save(answer);
     }
-    public void updateAnswerComment(Comment comment, Long answerId){
-        Answer answer = answerService.findById(answerId);
+    public void updateAnswerComment(Comment comment){
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = localDateTime.format(dateTimeFormatter);

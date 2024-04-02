@@ -59,4 +59,9 @@ public class AnswerServiceImpl implements AnswerService{
     public Answer findById(Long id) {
         return answerRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public void save(Answer answer) {
+        answerRepository.save(answer);
+    }
 }
