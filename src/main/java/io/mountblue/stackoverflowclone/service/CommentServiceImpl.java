@@ -6,6 +6,7 @@ import io.mountblue.stackoverflowclone.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -30,7 +31,10 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public void updateQuestionComment(Comment comment, Long questionId) {
-        comment.setUpdatedAt(LocalDateTime.now());
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = localDateTime.format(dateTimeFormatter);
+        comment.setUpdatedAt(formattedDateTime);
         commentRepository.save(comment);
     }
 

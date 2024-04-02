@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -39,9 +40,12 @@ public class QuestionServiceImpl implements QuestionService{
             }
             updatedTags.add(tag);
         }
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = localDateTime.format(dateTimeFormatter);
         question.setTags(updatedTags);
-        question.setUpdatedAt(LocalDateTime.now());
-        question.setCreatedAt(LocalDateTime.now());
+        question.setUpdatedAt(formattedDateTime);
+        question.setCreatedAt(formattedDateTime);
         question.setIsAnswered(Boolean.FALSE);
         question.setViewCount(0L);
         question.setVoteCount(0L);
@@ -74,7 +78,10 @@ public class QuestionServiceImpl implements QuestionService{
         Question oldQuestion = questionRepository.findById(updatedQuestion.getId()).get();
         oldQuestion.setTitle(updatedQuestion.getTitle());
         oldQuestion.setContent(updatedQuestion.getContent());
-        oldQuestion.setUpdatedAt(LocalDateTime.now());
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = localDateTime.format(dateTimeFormatter);
+        oldQuestion.setUpdatedAt(formattedDateTime);
         String[] updatedTagNames = tagList.split(",");
         for (int i = 0; i < updatedTagNames.length; i++) {
             updatedTagNames[i] = updatedTagNames[i].trim();

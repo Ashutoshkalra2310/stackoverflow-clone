@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
+  <title>Tags</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     * {
@@ -125,6 +125,7 @@
     .card-name:hover{
         color:#97bfea;
     }
+
   </style>
 </head>
 <body>
@@ -150,8 +151,13 @@
     />
   </form>
   <div class="login-btns">
-    <a th:href="@{/loginpage}" style="margin-right:7px" class="login-button">Login</a>
-    <a th:href="@{/registerpage}" style="margin-right:7px" class="signup-button">Sign Up</a>
+    <div sec:authorize="!isAuthenticated()">
+      <a th:href="@{/login}"  class="login-button">Login</a>
+      <a th:href="@{/register}" class="signup-button">Sign Up</a>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+      <a th:href="@{/logout}" class="login-button">Logout</a>
+    </div>
   </div>
 </div>
 <div class="content">
@@ -159,17 +165,21 @@
     <a href="#" class="logo"></a>
     <ul class="menu">
       <li class="menu-item"><a href="#" th:href="@{/homepage}" class="menu-link">HomePage</a></li>
-      <li class="menu-item"><a href="#" th:href="@{/taglist}" class="menu-link">Tags</a></li>
-      <li class="menu-item"><a href="#" th:href="@{/userlist}" class="menu-link">Users</a></li>
+      <li class="menu-item"><a href="#" th:href="@{/tagList}" class="menu-link">Tags</a></li>
+      <li class="menu-item"><a href="#" th:href="@{/userList}" class="menu-link">Users</a></li>
     </ul>
   </div>
+
   <div class="container">
+    <div><h1 style=" margin-top:40px; font-weight:700">Tags</h1></div>
     <div class="row">
       <!-- Iterate over the list of tags -->
+
       <div class="col-lg-3 col-md-6" style="margin-top:40px" th:each="tag : ${tags}">
         <div class="card">
           <div class="card-body" style="text-align:center; font-weight:700">
             <h5 class="card-title card-name" th:text="${tag.name}"></h5>
+            <p class="card-text">Tag Used In : <span th:text="${tag.questions.size()}"></span> Question</p>
             <!-- Add more tag details here if needed -->
           </div>
         </div>

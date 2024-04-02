@@ -19,8 +19,8 @@ public class Answer {
     private long id;
     @Column(columnDefinition = "TEXT")
     private String content;
-    private LocalDateTime publishedAt;
-    private LocalDateTime updatedAt;
+    private String publishedAt;
+    private String updatedAt;
     private Boolean isCorrectAnswer;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "question_id")

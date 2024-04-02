@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head >
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -255,8 +255,13 @@
         />
     </form>
     <div class="login-btns">
-        <a th:href="@{/loginpage}"  class="login-button">Login</a>
-        <a th:href="@{/registerpage}"  class="signup-button">Sign Up</a>
+        <div sec:authorize="!isAuthenticated()">
+            <a th:href="@{/login}"  class="login-button">Login</a>
+            <a th:href="@{/register}" class="signup-button">Sign Up</a>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <a th:href="@{/logout}" class="login-button">Logout</a>
+        </div>
     </div>
 </div>
 </div>
@@ -265,8 +270,8 @@
         <a href="#" class="logo"></a>
         <ul class="menu">
             <li class="menu-item"><a href="#" th:href="@{/homepage}" class="menu-link">HomePage</a></li>
-            <li class="menu-item"><a href="#" th:href="@{/taglist}" class="menu-link">Tags</a></li>
-            <li class="menu-item"><a href="#" class="menu-link">Users</a></li>
+            <li class="menu-item"><a href="#" th:href="@{/tagList}" class="menu-link">Tags</a></li>
+            <li class="menu-item"><a href="#" th:href="@{/userList}" class="menu-link">Users</a></li>
         </ul>
     </div>
     <div class="container">

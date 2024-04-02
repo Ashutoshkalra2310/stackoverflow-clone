@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class AnswerServiceImpl implements AnswerService{
@@ -20,7 +21,10 @@ public class AnswerServiceImpl implements AnswerService{
     public void updateAnswer(Long id,Answer updatedAnswer) {
         Answer prevAnswer=answerRepository.findById(id).get();
         prevAnswer.setContent(updatedAnswer.getContent());
-        prevAnswer.setUpdatedAt(LocalDateTime.now());
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = localDateTime.format(dateTimeFormatter);
+        prevAnswer.setUpdatedAt(formattedDateTime);
         prevAnswer.setComments(updatedAnswer.getComments());
         answerRepository.save(prevAnswer);
 

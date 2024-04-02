@@ -20,8 +20,8 @@ public class Question {
     private String title;
     @Column(columnDefinition = "TEXT")
     private String content;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String createdAt;
+    private String updatedAt;
     private Long viewCount;
     private Long voteCount;
     private Boolean isAnswered;

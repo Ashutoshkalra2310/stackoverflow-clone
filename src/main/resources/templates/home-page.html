@@ -1,10 +1,6 @@
-94% of storage used …
-If you run out, you can't create, edit, and upload files. Get 100 GB of storage for ₹130.00 ₹65.00/month for 6 months.
-Home-Page.html
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -326,8 +322,13 @@ p {
             />
         </form>
         <div class="login-btns">
-            <a th:href="@{/loginpage}" class="login-button">Login</a>
-            <a th:href="@{/registerpage}" class="signup-button">Sign Up</a>
+            <div sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}"  class="login-button">Login</a>
+                <a th:href="@{/register}" class="signup-button">Sign Up</a>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <a th:href="@{/logout}" class="login-button">Logout</a>
+            </div>
         </div>
     </div>
 
@@ -342,7 +343,7 @@ p {
         </h2>
         <p class="your-paragraph-class">A community-based space to find and contribute answers to technical challenges,
             and one of the most popular websites in the world.</p>
-        <a th:href="@{/loginpage}" class="your-button-class">Join the community</a>
+        <a th:href="@{/login}" class="your-button-class">Join the community</a>
         <p class="your-paragraph-class">or <a class="" style="color:black;" th:href="@{/allQuestions}">search content</a></p>
     </div>
 

@@ -18,8 +18,8 @@ public class Comment {
     private Long id;
     @Column(columnDefinition = "TEXT")
     private String comment;
-    private LocalDateTime publishedAt;
-    private LocalDateTime updatedAt;
+    private String publishedAt;
+    private String updatedAt;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "question_id")
     private Question question;

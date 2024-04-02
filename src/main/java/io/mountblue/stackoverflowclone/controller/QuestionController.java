@@ -1,11 +1,10 @@
 package io.mountblue.stackoverflowclone.controller;
 
-import io.mountblue.stackoverflowclone.entity.Question;
-import io.mountblue.stackoverflowclone.entity.Tag;
-import io.mountblue.stackoverflowclone.entity.View;
+import io.mountblue.stackoverflowclone.entity.*;
 import io.mountblue.stackoverflowclone.service.QuestionService;
 import io.mountblue.stackoverflowclone.entity.Tag;
 import io.mountblue.stackoverflowclone.service.TagService;
+import io.mountblue.stackoverflowclone.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +18,11 @@ import java.util.Set;
 public class QuestionController {
     private final QuestionService questionService;
     private final TagService tagService;
-    public QuestionController(QuestionService questionService, TagService tagService) {
+    private final UserService userService;
+    public QuestionController(QuestionService questionService, TagService tagService, UserService userService) {
         this.questionService = questionService;
         this.tagService = tagService;
+        this.userService = userService;
     }
     @GetMapping({"/allQuestions", "/"})
     public String showAllQuestions(Model model){
@@ -109,10 +110,16 @@ public class QuestionController {
     public String homepage(){
         return "home-page";
     }
-    @GetMapping("/taglist")
+    @GetMapping("/tagList")
     public String tag(Model model){
         List<Tag> tags =tagService.findAll();
         model.addAttribute("tags", tags);
         return "tags-list";
+    }
+    @GetMapping("/userList")
+    public String user(Model model){
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
+        return "user-list";
     }
 }

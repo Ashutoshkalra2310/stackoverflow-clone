@@ -28,7 +28,6 @@ public class UserController {
     public String showRegistration(Model model){
         User user = new User();
         model.addAttribute("user", user);
-        System.out.println("in register");
         return "registration";
     }
 
