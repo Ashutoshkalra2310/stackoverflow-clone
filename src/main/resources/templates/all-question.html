@@ -254,8 +254,8 @@
         />
     </form>
     <div class="login-btns">
-        <a class="login-button">Login</a>
-        <a class="signup-button">Sign Up</a>
+        <a class="login-button" th:href="@{/login}">Login</a>
+        <a class="signup-button" th:href="@{/register}">Sign Up</a>
     </div>
 </div>
 </div>
@@ -273,7 +273,7 @@
             <h1>Top Questions</h1>
             <a th:href="@{/addQuestion}"><button >Ask Question</button></a>
         </div>
-        <form action="#" th:action="@{/filter}" method="get" class="form">
+        <form action="#" th:action="@{/filters}" method="get" class="form">
         <div class="filter">
             <div>
                 <h3 >Filter By:</h3>

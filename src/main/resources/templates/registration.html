@@ -130,11 +130,16 @@
 <div class="container">
   <div class="login-container">
     <div>
-      <form class="login-form" action="/register" method="post">
+      <form class="login-form" th:action="@{/saveUser}" method="POST" th:object="${user}">
         <h2>Register</h2>
+        <div th:if="${param.error}">
+          <i style="color: red">Email already exist. Please try different username</i>
+        </div>
         <input type="text" name="name" placeholder="Name" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" placeholder="Email" required>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" placeholder="Password" required>
         <button type="submit">Register</button>
       </form>
       <p style="text-align:center; margin-top:10px">Already have an account ? <a th:href="@{/loginpage}" style="text-decoration:none; color:blue">Log in</a></p>

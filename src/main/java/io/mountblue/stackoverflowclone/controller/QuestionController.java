@@ -79,7 +79,7 @@ public class QuestionController {
         return "showQuestion";
     }
 
-    @GetMapping("/filter")
+    @GetMapping("/filters")
     public String filterQuestions(@RequestParam(name = "noAnswer", required = false, defaultValue = "false") boolean noAnswer,
                                   @RequestParam(name = "noAcceptedAnswer", required = false, defaultValue = "false") boolean noAcceptedAnswer,
                                   @RequestParam(name = "newest", required = false, defaultValue = "false") boolean newest,
