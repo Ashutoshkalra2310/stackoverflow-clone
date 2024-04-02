@@ -28,4 +28,14 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
                                    @Param("recentActivity") boolean recentActivity,
                                    @Param("tagSearch") String tagSearch);
 
+        @Query("SELECT DISTINCT q FROM Question q " +
+            "LEFT JOIN q.tags t " +
+            "JOIN q.user u " +
+            "WHERE " +
+            "(LOWER(q.title) LIKE LOWER(concat('%', :keyword, '%')) OR " +
+            "LOWER(q.content) LIKE LOWER(concat('%', :keyword, '%')) OR " +
+            "LOWER(t.name) LIKE LOWER(concat('%', :keyword, '%'))) AND " +
+            "(:username IS NULL OR LOWER(u.name) LIKE LOWER(concat('%', :username, '%')))")
+    List<Question> search(@Param("keyword") String keyword, @Param("username") String username);
+
 }
