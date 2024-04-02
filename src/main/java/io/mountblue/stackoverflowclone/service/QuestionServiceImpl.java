@@ -112,5 +112,9 @@ public class QuestionServiceImpl implements QuestionService{
         return questionRepository.findById(id).get();
     }
 
+    public List<Question> search(String keyword, String username) {
+        return questionRepository.search(keyword, username);
+    }
+
 
 }
