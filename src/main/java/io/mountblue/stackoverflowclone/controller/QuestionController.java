@@ -1,14 +1,16 @@
 package io.mountblue.stackoverflowclone.controller;
 
 import io.mountblue.stackoverflowclone.entity.Question;
+import io.mountblue.stackoverflowclone.entity.Tag;
+import io.mountblue.stackoverflowclone.entity.View;
 import io.mountblue.stackoverflowclone.service.QuestionService;
 import io.mountblue.stackoverflowclone.entity.Tag;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -23,7 +25,7 @@ public class QuestionController {
     public String showQuestions(Model model){
         List<Question> questions =  questionService.getAllQuestions();
         model.addAttribute("questions", questions);
-        return "homepage";
+        return "all-question";
     }
     @GetMapping("/question")
     public String showQuestion(Model model,

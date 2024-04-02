@@ -32,7 +32,7 @@ public class AnswerController {
         answerService.deleteAnswer(id);
         return "redirect:show-question";
     }
-    
+
 }
 
 
