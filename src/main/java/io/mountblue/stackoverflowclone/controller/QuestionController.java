@@ -81,13 +81,6 @@ public class QuestionController {
         questionService.deleteQuestion(id);
         return "redirect:/allQuestions";
     }
-    @GetMapping("/question/{questionId}")
-    public String showQuestion(Model model,@PathVariable("questionId") Long id){
-        Question question = questionService.findById(id);
-        model.addAttribute(question);
-        return "showQuestion";
-    }
-
     @GetMapping("/filters")
     public String filterQuestions(@RequestParam(name = "noAnswer", required = false, defaultValue = "false") boolean noAnswer,
                                   @RequestParam(name = "noAcceptedAnswer", required = false, defaultValue = "false") boolean noAcceptedAnswer,
@@ -111,15 +104,7 @@ public class QuestionController {
     @GetMapping("/showQuestion/{questionId}")
     public String showQuestion(@PathVariable("questionId") Long id, Model model){
         Question question = questionService.findById(id);
-        View view = viewService.findByUserAndQuestion(/*User user,*/ question);
-        if(view == null){
-            view = new View();
-            view.setQuestion(question);
-//            view.setUser(user);
-            viewService.save(view);
-            question.setViewCount(question.getViewCount() + 1);
-            questionService.save(question);
-        }
+        viewService.addView(question);
         model.addAttribute("question", question);
         return "show-question";
     }

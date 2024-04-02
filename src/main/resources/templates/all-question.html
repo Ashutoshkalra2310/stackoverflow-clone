@@ -331,7 +331,7 @@
                             <p><span th:text="${question.viewCount}"></span> views</p>
                         </div>
                         <div class="question-content">
-                            <h3><a th:href="@{'/question/' + ${question.id}}" th:text="${question.title}">Question Title</a></h3>
+                            <h3><a th:href="@{'/showQuestion/' + ${question.id}}" th:text="${question.title}">Question Title</a></h3>
                             <div class="meta">
                             <span class="tags" th:each="tag : ${question.tags}">
                                 <a th:href="@{'/tag/' + ${tag.id}}" th:text="${tag.name}">Tag</a>
