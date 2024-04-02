@@ -8,15 +8,3 @@ public interface AnswerService {
     public void deleteAnswer(Long id);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
