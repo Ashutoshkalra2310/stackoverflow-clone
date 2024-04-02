@@ -413,8 +413,9 @@
             <!-- Display comments -->
         </div>
         <div class="buttons">
-            <a ><button style="border:none; border-radius:4px;font-weight:700;background-color:orange" type="submit">Update</button></a>
-            <a ><button style="background-color:red; border:none; border-radius:4px; font-weight:700 " type="submit">Delete</button></a>
+            <a th:href="@{'/showQuestionToUpdate/' + ${question.id}}">
+            <button type="submit" style="border:none; border-radius:4px;font-weight:700;background-color:orange" >Update</button></a>
+            <a th:href="@{'/deleteQuestion/' + ${question.id}}"><button type="submit" style="background-color:red; border:none; border-radius:4px; font-weight:700 " >Delete</button></a>
         </div>
         <div class="comments">
             <h2>Comments:</h2>
