@@ -1,8 +1,6 @@
 package io.mountblue.stackoverflowclone.service;
 
-import io.mountblue.stackoverflowclone.entity.Question;
-import io.mountblue.stackoverflowclone.entity.Tag;
-import io.mountblue.stackoverflowclone.entity.User;
+import io.mountblue.stackoverflowclone.entity.*;
 import io.mountblue.stackoverflowclone.repository.QuestionRepository;
 import org.springframework.cglib.core.Local;
 import io.mountblue.stackoverflowclone.entity.Question;
@@ -22,11 +20,13 @@ public class QuestionServiceImpl implements QuestionService{
     private final QuestionRepository questionRepository;
     private final TagService tagService;
     private final UserService userService;
+    private final ViewService viewService;
 
-    public QuestionServiceImpl(QuestionRepository questionRepository, TagService tagService, UserService userService) {
+    public QuestionServiceImpl(QuestionRepository questionRepository, TagService tagService, UserService userService, ViewService viewService) {
         this.questionRepository = questionRepository;
         this.tagService = tagService;
         this.userService = userService;
+        this.viewService = viewService;
     }
 
     @Override
@@ -124,7 +124,20 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public Question findById(Long id) {
-        return questionRepository.findById(id).get();
+        Question question = questionRepository.findById(id).get();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+        View view = viewService.findByUserAndQuestion(question, user);
+        if(view == null){
+            view = new View();
+            view.setQuestion(question);
+            view.setUser(user);
+            viewService.save(view);
+            question.setViewCount(question.getViewCount() + 1);
+        }
+        save(question);
+        question = questionRepository.findById(id).get();
+        return question;
     }
 
     public List<Question> search(String keyword, String username) {

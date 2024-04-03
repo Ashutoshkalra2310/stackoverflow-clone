@@ -2,10 +2,15 @@ package io.mountblue.stackoverflowclone.controller;
 
 import io.mountblue.stackoverflowclone.entity.*;
 import io.mountblue.stackoverflowclone.service.CommentService;
+import io.mountblue.stackoverflowclone.entity.Question;
+import io.mountblue.stackoverflowclone.entity.View;
 import io.mountblue.stackoverflowclone.service.QuestionService;
 import io.mountblue.stackoverflowclone.entity.Tag;
 import io.mountblue.stackoverflowclone.service.TagService;
 import io.mountblue.stackoverflowclone.service.UserService;
+import io.mountblue.stackoverflowclone.service.ViewService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,15 +23,19 @@ import java.util.Set;
 @Controller
 public class QuestionController {
     private final QuestionService questionService;
+    private final ViewService viewService;
     private final TagService tagService;
     private final UserService userService;
     private final CommentService commentService;
-    public QuestionController(QuestionService questionService, TagService tagService, UserService userService, CommentService commentService) {
+
+    public QuestionController(QuestionService questionService, TagService tagService, UserService userService, CommentService commentService, ViewService viewService) {
         this.questionService = questionService;
+        this.viewService = viewService;
         this.tagService = tagService;
         this.userService = userService;
         this.commentService = commentService;
     }
+
     @GetMapping({"/allQuestions", "/"})
     public String showAllQuestions(Model model){
         List<Question> questions =  questionService.getAllQuestions();
@@ -92,6 +101,11 @@ public class QuestionController {
         return "review-question";
     }
 
+    @GetMapping("/askQuestion")
+    public String showAskQuestionForm(Model model){
+        model.addAttribute("question", new Question());
+        return "add-question";
+    }
     @GetMapping("/deleteQuestion/{questionId}")
     public String deleteQuestion(@PathVariable("questionId") Long id){
         questionService.deleteQuestion(id);
@@ -150,4 +164,12 @@ public class QuestionController {
         model.addAttribute("users", users);
         return "user-list";
     }
+
+    @GetMapping("/showQuestion/{questionId}")
+    public String showQuestion(@PathVariable("questionId") Long id, Model model){
+        Question question = questionService.findById(id);
+        model.addAttribute("question", question);
+        return "show-question";
+    }
+
 }
