@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
-  <title>Users</title>
+  <title>Tags</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     * {
@@ -125,14 +125,7 @@
     .card-name:hover{
         color:#97bfea;
     }
-    .card a{
-       text-decoration:none;
-       color:black;
-    }
-    .card a:hover{
-      text-decoration:none;
-      color:black;
-    }
+
   </style>
 </head>
 <body>
@@ -176,19 +169,20 @@
       <li class="menu-item"><a href="#" th:href="@{/userList}" class="menu-link">Users</a></li>
     </ul>
   </div>
+
   <div class="container">
-    <div><h1 style=" margin-top:40px; font-weight:700">Users</h1></div>
+    <div><h1 style=" margin-top:40px; font-weight:700">Tags</h1></div>
     <div class="row">
       <!-- Iterate over the list of tags -->
-      <div class="col-lg-3 col-md-6" style="margin-top:40px" th:each="user : ${users}">
+
+      <div class="col-lg-3 col-md-6" style="margin-top:40px" th:each="tag : ${tags}">
         <div class="card">
-          <a th:href="@{/showUser(userId=${user.id})}" >
-            <div class="card-body" style="text-align:center; font-weight:700">
-              <h5 class="card-title card-name" th:text="${user.name}"></h5>
-              <p class="card-text">Email: <span th:text="${user.email}"></span></p>
-              <p class="card-text">Questions Asked: <span th:text="${user.questions.size()}"></span></p>
-              <!-- Add more tag details here if needed -->
-            </div>
+          <a th:href="@{/showTag(tagId=${tag.id})}" >
+          <div class="card-body" style="text-align:center; font-weight:700">
+            <h5 class="card-title card-name" th:text="${tag.name}"></h5>
+            <p class="card-text">Tag Used In : <span th:text="${tag.questions.size()}"></span> Question</p>
+            <!-- Add more tag details here if needed -->
+          </div>
           </a>
         </div>
       </div>

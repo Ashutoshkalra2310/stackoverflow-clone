@@ -18,8 +18,8 @@ public class Comment {
     private Long id;
     @Column(columnDefinition = "TEXT")
     private String comment;
-    private LocalDateTime publishedAt;
-    private LocalDateTime updatedAt;
+    private String publishedAt;
+    private String updatedAt;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "question_id")
     private Question question;
@@ -30,4 +30,16 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", comment='" + comment + '\'' +
+                ", publishedAt='" + publishedAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", question=" + question +
+                ", answer=" + answer +
+                ", user=" + user +
+                '}';
+    }
 }

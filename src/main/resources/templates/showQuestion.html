@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head >
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -208,6 +208,7 @@
             align-items:center;
             justify-content:space-evenly;
             width: 236px;
+            text-decoration:none;
         }
         .filter{
             background-color: rgba(0,0,0,0.2);
@@ -236,7 +237,7 @@
         }
 
         .question-details, .comments, .answers {
-            width: 800px;
+            width: 70%;
             margin: 0 auto;
             padding: 20px;
             border: 1px solid #ccc;
@@ -249,6 +250,7 @@
         .question-details h1 ,.comments h1 , .answers h1 {
             font-size: 24px;
             margin-bottom: 10px;
+            text-align: center;
         }
 
         .question-details p , .comments p , .answers p{
@@ -326,6 +328,52 @@
         .comments , .answers{
             margin-top:30px;
         }
+        .buttons{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            width:70%;
+            margin: 0 auto;
+        }
+        .buttons button{
+            font-size: 20px;
+            padding: 10px 28px;
+            font-weight:700;
+            background-color:transparent;
+            color:grey;
+        }
+        .buttons button:hover{
+             font-size: 20px;
+            padding: 10px 28px;
+            font-weight:700;
+            background-color:transparent;
+            color:black;
+            cursor:pointer;
+        }
+        .question-comments{
+            height:auto;
+        }
+        .correct-answer{
+            font-size:10px;
+            margin:4px 0px;
+            padding: 7px 17px;
+            color:white;
+            border:none;
+            border-radius:4px;
+            font-weight:700;
+        }
+        .correct-answer-div{
+            width:100%;
+            display:flex;
+            align-items:center;
+            justify-content:end
+        }
+        a{
+            color:grey;
+        }
+        a:hover{
+            color:black;
+        }
     </style>
 </head>
 <body>
@@ -349,8 +397,13 @@
         />
     </form>
     <div class="login-btns">
-        <a class="login-button">Login</a>
-        <a class="signup-button">Sign Up</a>
+        <div sec:authorize="!isAuthenticated()">
+            <a th:href="@{/login}"  class="login-button">Login</a>
+            <a th:href="@{/register}" class="signup-button">Sign Up</a>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <a style="text-decoration:none;" th:href="@{/logout}" class="login-button">Logout</a>
+        </div>
     </div>
 </div>
 </div>
@@ -358,15 +411,16 @@
     <div class="sidebar">
         <a href="#" class="logo"></a>
         <ul class="menu">
-            <li class="menu-item"><a href="#" class="menu-link">Questions</a></li>
-            <li class="menu-item"><a href="#" class="menu-link">Tags</a></li>
-            <li class="menu-item"><a href="#" class="menu-link">Users</a></li>
+            <li class="menu-item"><a href="#" th:href="@{/homepage}" class="menu-link">HomePage</a></li>
+            <li class="menu-item"><a href="#" th:href="@{/tagList}" class="menu-link">Tags</a></li>
+            <li class="menu-item"><a href="#" th:href="@{/userList}" class="menu-link">Users</a></li>
         </ul>
     </div>
     <div class="container">
-        <button href="" style=" height: 46px; width: 138px; color:white; background-color:#0e79ea; border:none; border-radius:7px; margin: 0 auto; margin-top: 0px; margin-top: 36px; font-weight: 700; cursor:pointer;">Ask Question</button>
+        <button th:href="@{/addQuestion}" style=" height: 46px; width: 138px; color:white; background-color:#0e79ea; border:none; border-radius:7px; margin: 0 auto; margin-top: 0px; margin-top: 36px; font-weight: 700; cursor:pointer;">Ask Question</button>
         <div class="question-details">
             <h1 th:text="${question.title}"></h1>
+            <br>
             <div class="inner-question">
                 <div class="votes">
                     <button class="upvote" onclick="">
@@ -387,18 +441,38 @@
             <p>Updated at: <span th:text="${question.updatedAt}"></span></p>
             <p>Views: <span th:text="${question.viewCount}"></span></p>
             </div>
+            <br>
+            <p>Author : <span  th:text="${question.user.name}"></span></p>
             <!-- Display comments -->
         </div>
+        <div class="buttons">
+            <a th:href="@{'/showQuestionToUpdate/' + ${question.id}}">
+            <button type="submit" style="border:none; font-weight:700;" >Update</button></a>
+            <a th:href="@{'/deleteQuestion/' + ${question.id}}"><button type="submit" style=" border:none; font-weight:700 " >Delete</button></a>
+        </div>
         <div class="comments">
-            <h2>Comments:</h2>
-            <ul>
-                <li th:each="comment : ${question.comments}" th:text="${comment.content}"></li>
-            </ul>
+            <h2 style="margin-bottom:20px">Comments:</h2>
+            <hr>
+            <div class="question-comments" th:each="comment : ${question.comments}">
+                <br>
+                <p th:text="${comment.comment}"></p>
+                <br>
+                <p>Author : <span th:text="${comment.user.name}"></span></p>
+                <p>Published at : <span th:text="${comment.publishedAt}"></span></p>
+                <br>
+                <div class="buttons">
+                    <a th:href="@{'/updateQuestionComment/' + ${comment.id}}"><button style="border:none; font-weight:700;" type="submit">Update</button></a>
+                    <a th:href="@{'/deleteQuestionComment/' + ${comment.id}}"><button style=" border:none; font-weight:700 " type="submit">Delete</button></a>
+                </div>
+                <br>
+                <hr>
+            </div>
 
             <!-- Add comment form -->
-            <form th:action="@{/addComment}" method="post">
+            <form action="#" th:action="@{/addQuestionComment}" th:object="${Comment}" method="POST">
                 <input type="hidden" name="questionId" th:value="${question.id}">
-                <textarea name="content" placeholder="Enter your comment"></textarea>
+                <input type="hidden" name="commentId" th:field="${Comment.id}">
+                <textarea name="content" th:field="${Comment.comment}"  placeholder="Enter your comment"></textarea>
                 <button type="submit">Add Comment</button>
             </form>
         </div>
@@ -406,32 +480,69 @@
 
         <div class="answers">
             <h2>Answers:</h2>
+            <br>
+            <hr>
             <!-- Iterate over answers and display each answer -->
             <div th:each="answer : ${question.answers}" class="answer">
                 <!-- Answer content -->
+                <br>
                 <div class="inner-question">
                     <div class="votes">
                         <button class="upvote" onclick="">
                             <svg aria-hidden="true" class="svg-icon iconArrowUp" width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z"></path></svg>
                         </button>
-                        <b th:text="${answer.voteCount}"></b>
+<!--                        <b th:text="${answer.voteCount}"></b>-->
                         <button class="downvote" onclick="">
                             <svg aria-hidden="true" class="svg-icon iconArrowDown" width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z"></path></svg>
                         </button>
                     </div>
-                    <div th:text="${answer.content}"></div>
+                    <div class="question-description">
+                        <p th:utext="${answer.content}"></p>
+                    </div>
                 </div>
                 <!-- Answer features (created at, updated at, votes) -->
-                <div class="answer-features">
-                    <p>Created at: <span th:text="${answer.createdAt}"></span></p>
-                    <p>Updated at: <span th:text="${answer.updatedAt}"></span></p>
-                    <p>Votes: <span th:text="${answer.voteCount}"></span></p>
+                <br>
+                <div class="correct-answer-div">
+                <a><button class="correct-answer" style="border:none; border-radius:4px;font-weight:700;background-color:black">Mark As Correct Answer</button></a>
                 </div>
+                <br>
+                <div class="answer-features">
+                    <p>Updated at: <span th:text="${answer.updatedAt}"></span></p>
+<!--                    <p>Votes: <span th:text="${answer.voteCount}"></span></p>-->
+                    <p>Author: <span th:text="${answer.user.name}"></span></p>
+                    <br>
+                    <div class="buttons">
+                        <a th:href="@{'/showAnswerToUpdate/' + ${answer.id}}"><button style="border:none; font-weight:700;" type="submit">Update</button></a>
+                        <a th:href="@{'/deleteAnswer/' + ${answer.id} + '/' + ${questionId}}"><button style=" border:none;  font-weight:700 " type="submit">Delete</button></a>
+<!--                        <a ><button style="border:none;font-weight:700;" type="submit">Update</button></a>-->
+<!--                        <a th:href="@{'/deleteAnswer/' + ${answer.id} + '/' + ${questionId}}"><button style=" border:none; font-weight:700 " type="submit">Delete</button></a>-->
+                    </div>
+                    <br>
+                    <hr>
+                </div>
+<!--                <p>Author : <span th:text="${answer.user.name}"></span></p>-->
+                <br>
+                <br>
+                <h2>Comments:</h2>
+                <div th:each="comment : ${answer.comments}">
+                    <p th:text="${comment.content}"></p>
+                    <div class="buttons">
+                        <a ><button style="border:none; font-weight:700;" type="submit">Update</button></a>
+                        <a ><button style=" border:none; font-weight:700 " type="submit">Delete</button></a>
+                    </div>
+                </div>
+                <!-- Add comment form -->
+                <form th:action="@{/addComment}" method="post">
+                    <input type="hidden" name="answerId" th:value="${answer.id}">
+                    <textarea name="content" placeholder="Enter your comment"></textarea>
+                    <button type="submit">Add Comment</button>
+                </form>
             </div>
             <!-- Add answer form -->
-            <form th:action="@{/addAnswer}" method="post">
+            <form th:action="@{/saveAnswer}" method="post" th:object="${answer}">
                 <input type="hidden" name="questionId" th:value="${question.id}">
-                <textarea id="content" name="content" placeholder="Enter your answer"></textarea>
+                <input type="hidden" name="id" th:value="${answer.id}">
+                <textarea id="content" name="content" th:text="${answer.content}" placeholder="Enter your answer"></textarea>
                 <script>
                     tinymce.init({
                         selector: '#content',

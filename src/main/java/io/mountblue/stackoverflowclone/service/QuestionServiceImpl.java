@@ -2,14 +2,18 @@ package io.mountblue.stackoverflowclone.service;
 
 import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.entity.Tag;
+import io.mountblue.stackoverflowclone.entity.User;
 import io.mountblue.stackoverflowclone.repository.QuestionRepository;
 import org.springframework.cglib.core.Local;
 import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -17,10 +21,12 @@ public class QuestionServiceImpl implements QuestionService{
 
     private final QuestionRepository questionRepository;
     private final TagService tagService;
+    private final UserService userService;
 
-    public QuestionServiceImpl(QuestionRepository questionRepository, TagService tagService) {
+    public QuestionServiceImpl(QuestionRepository questionRepository, TagService tagService, UserService userService) {
         this.questionRepository = questionRepository;
         this.tagService = tagService;
+        this.userService = userService;
     }
 
     @Override
@@ -39,12 +45,18 @@ public class QuestionServiceImpl implements QuestionService{
             }
             updatedTags.add(tag);
         }
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = localDateTime.format(dateTimeFormatter);
         question.setTags(updatedTags);
-        question.setUpdatedAt(LocalDateTime.now());
-        question.setCreatedAt(LocalDateTime.now());
+        question.setUpdatedAt(formattedDateTime);
+        question.setCreatedAt(formattedDateTime);
         question.setIsAnswered(Boolean.FALSE);
         question.setViewCount(0L);
         question.setVoteCount(0L);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+        question.setUser(user);
         questionRepository.save(question);
     }
 
@@ -74,7 +86,10 @@ public class QuestionServiceImpl implements QuestionService{
         Question oldQuestion = questionRepository.findById(updatedQuestion.getId()).get();
         oldQuestion.setTitle(updatedQuestion.getTitle());
         oldQuestion.setContent(updatedQuestion.getContent());
-        oldQuestion.setUpdatedAt(LocalDateTime.now());
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = localDateTime.format(dateTimeFormatter);
+        oldQuestion.setUpdatedAt(formattedDateTime);
         String[] updatedTagNames = tagList.split(",");
         for (int i = 0; i < updatedTagNames.length; i++) {
             updatedTagNames[i] = updatedTagNames[i].trim();

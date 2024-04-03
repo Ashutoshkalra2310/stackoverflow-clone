@@ -1,20 +1,31 @@
 package io.mountblue.stackoverflowclone.controller;
 
-import io.mountblue.stackoverflowclone.entity.Question;
+import io.mountblue.stackoverflowclone.entity.*;
+import io.mountblue.stackoverflowclone.service.CommentService;
 import io.mountblue.stackoverflowclone.service.QuestionService;
+import io.mountblue.stackoverflowclone.entity.Tag;
+import io.mountblue.stackoverflowclone.service.TagService;
+import io.mountblue.stackoverflowclone.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Controller
 public class QuestionController {
     private final QuestionService questionService;
-
-    public QuestionController(QuestionService questionService) {
+    private final TagService tagService;
+    private final UserService userService;
+    private final CommentService commentService;
+    public QuestionController(QuestionService questionService, TagService tagService, UserService userService, CommentService commentService) {
         this.questionService = questionService;
+        this.tagService = tagService;
+        this.userService = userService;
+        this.commentService = commentService;
     }
     @GetMapping({"/allQuestions", "/"})
     public String showAllQuestions(Model model){
@@ -44,6 +55,7 @@ public class QuestionController {
                                  @RequestParam(value = "detailedProblem", required = false) String detailedProblem,
                                  @RequestParam(value = "expectingResults", required = false) String expectingResults
                                  ,Model model){
+
         if(detailedProblem != null){
             question.setContent(detailedProblem);
         }
@@ -67,6 +79,19 @@ public class QuestionController {
         return "redirect:/allQuestions";
     }
 
+    @GetMapping("/showQuestionToUpdate/{questionId}")
+    public String updateQuestion(@PathVariable("questionId") Long questionId, Model model){
+        Question question = questionService.findById(questionId);
+        model.addAttribute("question", question);
+        List<Tag> tagList = question.getTags();
+        StringBuilder tagString = new StringBuilder();
+        for(Tag tag : tagList){
+            tagString.append(tag.getName()).append(" ,");
+        }
+        model.addAttribute("tagList", tagString.substring(0, tagString.length()-1));
+        return "review-question";
+    }
+
     @GetMapping("/deleteQuestion/{questionId}")
     public String deleteQuestion(@PathVariable("questionId") Long id){
         questionService.deleteQuestion(id);
@@ -75,11 +100,13 @@ public class QuestionController {
     @GetMapping("/question/{questionId}")
     public String showQuestion(Model model,@PathVariable("questionId") Long id){
         Question question = questionService.findById(id);
-        model.addAttribute(question);
+        model.addAttribute("question", question);
+        model.addAttribute("Comment", new Comment());
+        model.addAttribute("answer", new Answer());
         return "showQuestion";
     }
 
-    @GetMapping("/filter")
+    @GetMapping("/filters")
     public String filterQuestions(@RequestParam(name = "noAnswer", required = false, defaultValue = "false") boolean noAnswer,
                                   @RequestParam(name = "noAcceptedAnswer", required = false, defaultValue = "false") boolean noAcceptedAnswer,
                                   @RequestParam(name = "newest", required = false, defaultValue = "false") boolean newest,
@@ -106,5 +133,21 @@ public class QuestionController {
         List<Question> searchResults = questionService.search(keyword, username);
         model.addAttribute("searchResults", searchResults);
         return "search-results";
+    }
+    @GetMapping("/homepage")
+    public String homepage(){
+        return "home-page";
+    }
+    @GetMapping("/tagList")
+    public String tag(Model model){
+        List<Tag> tags =tagService.findAll();
+        model.addAttribute("tags", tags);
+        return "tags-list";
+    }
+    @GetMapping("/userList")
+    public String user(Model model){
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
+        return "user-list";
     }
 }

@@ -16,12 +16,13 @@ import java.util.List;
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(columnDefinition = "TEXT")
     private String content;
-    private LocalDateTime publishedAt;
-    private LocalDateTime updatedAt;
+    private String publishedAt;
+    private String updatedAt;
     private Boolean isCorrectAnswer;
+    private Long voteCount;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "question_id")
     private Question question;

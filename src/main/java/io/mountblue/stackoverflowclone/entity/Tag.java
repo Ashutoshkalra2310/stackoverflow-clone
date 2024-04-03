@@ -19,7 +19,7 @@ public class Tag {
     private Long id;
     String name;
     String description;
-    @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     private List<Question> questions;
 
     @Override
