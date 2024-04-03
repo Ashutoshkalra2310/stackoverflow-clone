@@ -387,15 +387,15 @@
         </svg>
         Stack<strong style="font-family:sans-serif;">overflow</strong>
     </a>
-    <form action="@{/search}" method="get" class="search-form">
-        <input
-                type="text"
-                name="searchString"
-                class="search-input"
-                placeholder="Search..."
-                th:value="${searchString}"
-        />
-    </form>
+    <form action="#" th:action="@{/searchQuestion}" method="get" class="search-form">
+            <input
+                    type="text"
+                    name="keyword"
+                    th:value="${keyword}"
+                    class="search-input"
+                    placeholder="Search..."
+            />
+        </form>
     <div class="login-btns">
         <div sec:authorize="!isAuthenticated()">
             <a th:href="@{/login}"  class="login-button">Login</a>
