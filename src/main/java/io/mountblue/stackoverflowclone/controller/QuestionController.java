@@ -118,7 +118,7 @@ public class QuestionController {
         model.addAttribute("question", question);
         model.addAttribute("Comment", new Comment());
         model.addAttribute("answer", new Answer());
-        return "showQuestion";
+        return "show-question";
     }
 
     @GetMapping("/filters")
@@ -165,13 +165,4 @@ public class QuestionController {
         model.addAttribute("users", users);
         return "user-list";
     }
-
-    @GetMapping("/showQuestion/{questionId}")
-    public String showQuestion(@PathVariable("questionId") Long id, Model model){
-        Question question = questionService.findById(id);
-        viewService.addView(question);
-        model.addAttribute("question", question);
-        return "show-question";
-    }
-
 }
