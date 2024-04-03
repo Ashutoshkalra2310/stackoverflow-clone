@@ -1,24 +1,18 @@
 package io.mountblue.stackoverflowclone.repository;
 
 import io.mountblue.stackoverflowclone.entity.Vote;
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public interface VoteRepository extends JpaRepository<Vote,Long> {
 
-    @Transactional
-    @Query("UPDATE Vote v SET v.voteType = 'UPVOTE' " +
-            "WHERE v.question.id = :questionId AND v.user.id = :userId " +
-            "AND NOT EXISTS (SELECT 1 FROM Vote v2 WHERE v2.question.id = :questionId AND v2.user.id = :userId)")
-    boolean upVoteQuestion(Long questionId, Long userId);
+    @Query("SELECT v FROM Vote v WHERE v.question.id = ?1 AND v.user.id = ?2")
+    Optional<Vote> findByQuestionIdAndUserId(Long questionId, Long userId);
 
-    @Transactional
-    @Query("UPDATE Vote v SET v.voteType = 'DOWNVOTE' " +
-            "WHERE v.question.id = :questionId AND v.user.id = :userId " +
-            "AND NOT EXISTS (SELECT 1 FROM Vote v2 WHERE v2.question.id = :questionId AND v2.user.id = :userId)")
-    boolean downVoteQuestion(Long questionId, Long userId);
+    @Query("SELECT v FROM Vote v WHERE v.answer.id = ?1 AND v.user.id = ?2")
+    Optional<Vote> findByAnswerIdAndUserId(Long answerId, Long userId);
 }
