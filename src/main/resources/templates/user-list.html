@@ -182,7 +182,7 @@
       <!-- Iterate over the list of tags -->
       <div class="col-lg-3 col-md-6" style="margin-top:40px" th:each="user : ${users}">
         <div class="card">
-          <a th:href="@{/filter}" >
+          <a th:href="@{/showUser(userId=${user.id})}" >
             <div class="card-body" style="text-align:center; font-weight:700">
               <h5 class="card-title card-name" th:text="${user.name}"></h5>
               <p class="card-text">Email: <span th:text="${user.email}"></span></p>

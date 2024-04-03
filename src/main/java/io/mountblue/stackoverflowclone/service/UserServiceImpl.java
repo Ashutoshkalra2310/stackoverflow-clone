@@ -1,5 +1,6 @@
 package io.mountblue.stackoverflowclone.service;
 
+import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.entity.User;
 import io.mountblue.stackoverflowclone.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,6 +36,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<Question> findByUserId(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        List<Question> questions = userRepository.findQuestionsByUser(user);
+        return questions;
     }
 
     @Override

@@ -2,11 +2,14 @@ package io.mountblue.stackoverflowclone.service;
 
 import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.entity.Tag;
+import io.mountblue.stackoverflowclone.entity.User;
 import io.mountblue.stackoverflowclone.repository.QuestionRepository;
 import org.springframework.cglib.core.Local;
 import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,10 +21,12 @@ public class QuestionServiceImpl implements QuestionService{
 
     private final QuestionRepository questionRepository;
     private final TagService tagService;
+    private final UserService userService;
 
-    public QuestionServiceImpl(QuestionRepository questionRepository, TagService tagService) {
+    public QuestionServiceImpl(QuestionRepository questionRepository, TagService tagService, UserService userService) {
         this.questionRepository = questionRepository;
         this.tagService = tagService;
+        this.userService = userService;
     }
 
     @Override
@@ -49,6 +54,9 @@ public class QuestionServiceImpl implements QuestionService{
         question.setIsAnswered(Boolean.FALSE);
         question.setViewCount(0L);
         question.setVoteCount(0L);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+        question.setUser(user);
         questionRepository.save(question);
     }
 

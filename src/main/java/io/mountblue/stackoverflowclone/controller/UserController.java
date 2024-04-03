@@ -1,20 +1,27 @@
 package io.mountblue.stackoverflowclone.controller;
 
+import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.entity.User;
+import io.mountblue.stackoverflowclone.service.QuestionService;
+import io.mountblue.stackoverflowclone.service.TagService;
+import io.mountblue.stackoverflowclone.service.TagServiceImpl;
 import io.mountblue.stackoverflowclone.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
+    private final QuestionService questionService;
+    private final TagService tagService;
+    public UserController(UserService userService, QuestionService questionService, TagService tagService) {
         this.userService = userService;
+        this.questionService = questionService;
+        this.tagService = tagService;
     }
 
     @GetMapping("/login")
@@ -40,5 +47,17 @@ public class UserController {
             userService.saveUser(user);
         }
         return "redirect:/login";
+    }
+    @GetMapping("/showUser")
+    public String showUser(Model model, @RequestParam("userId") Long userId){
+        List<Question> questionList = userService.findByUserId(userId);
+        model.addAttribute("questions", questionList);
+        return "all-question";
+    }
+    @GetMapping("/showTag")
+    public String showTag(Model model, @RequestParam("tagId") Long tagId){
+        List<Question> questionList = tagService.findQuestionByTagName(tagId);
+        model.addAttribute("questions", questionList);
+        return "all-question";
     }
 }

@@ -3,7 +3,10 @@ package io.mountblue.stackoverflowclone.service;
 import io.mountblue.stackoverflowclone.entity.Answer;
 import io.mountblue.stackoverflowclone.entity.Comment;
 import io.mountblue.stackoverflowclone.entity.Question;
+import io.mountblue.stackoverflowclone.entity.User;
 import io.mountblue.stackoverflowclone.repository.CommentRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,11 +19,12 @@ public class CommentServiceImpl implements CommentService{
     private final CommentRepository commentRepository;
     private final QuestionService questionService;
     private final AnswerService answerService;
-
-    public CommentServiceImpl(CommentRepository commentRepository, QuestionService questionService, AnswerService answerService) {
+    private final UserService userService;
+    public CommentServiceImpl(CommentRepository commentRepository, QuestionService questionService, AnswerService answerService, UserService userService) {
         this.commentRepository = commentRepository;
         this.questionService = questionService;
         this.answerService = answerService;
+        this.userService = userService;
     }
 
     @Override
@@ -32,8 +36,12 @@ public class CommentServiceImpl implements CommentService{
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = localDateTime.format(dateTimeFormatter);
         comment.setUpdatedAt(formattedDateTime);
+        comment.setPublishedAt(formattedDateTime);
         question.setComments(comments);
         comment.setQuestion(question);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+        comment.setUser(user);
         questionService.save(question);
     }
 
@@ -66,9 +74,12 @@ public class CommentServiceImpl implements CommentService{
         comment.setUpdatedAt(formattedDateTime);
         answer.setComments(comments);
         comment.setAnswer(answer);
-        commentRepository.save(comment);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName());
+        comment.setUser(user);
         answerService.save(answer);
     }
+
     public void updateAnswerComment(Comment comment){
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
