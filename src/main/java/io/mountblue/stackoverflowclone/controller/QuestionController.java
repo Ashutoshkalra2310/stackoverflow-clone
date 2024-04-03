@@ -10,7 +10,9 @@ import io.mountblue.stackoverflowclone.service.TagService;
 import io.mountblue.stackoverflowclone.service.UserService;
 import io.mountblue.stackoverflowclone.service.ViewService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -112,12 +114,15 @@ public class QuestionController {
         return "redirect:/allQuestions";
     }
     @GetMapping("/question/{questionId}")
-    public String showQuestion(Model model,@PathVariable("questionId") Long id){
+    public String showQuestion(Model model,@PathVariable("questionId") Long id, @AuthenticationPrincipal UserDetails userDetails){
         Question question = questionService.findById(id);
         viewService.addView(question);
         model.addAttribute("question", question);
         model.addAttribute("Comment", new Comment());
         model.addAttribute("answer", new Answer());
+        if(userDetails != null){
+            model.addAttribute("currentUser", userDetails.getUsername());
+        }
         return "show-question";
     }
 
