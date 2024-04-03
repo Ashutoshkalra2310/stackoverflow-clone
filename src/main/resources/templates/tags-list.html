@@ -125,7 +125,9 @@
     .card-name:hover{
         color:#97bfea;
     }
-
+    .card a{
+      color:black;
+    }
   </style>
 </head>
 <body>
@@ -177,7 +179,7 @@
 
       <div class="col-lg-3 col-md-6" style="margin-top:40px" th:each="tag : ${tags}">
         <div class="card">
-          <a th:href="@{/showTag(tagId=${tag.id})}" >
+          <a style="text:decoration:none; color:black" th:href="@{/showTag(tagId=${tag.id})}" >
           <div class="card-body" style="text-align:center; font-weight:700">
             <h5 class="card-title card-name" th:text="${tag.name}"></h5>
             <p class="card-text">Tag Used In : <span th:text="${tag.questions.size()}"></span> Question</p>

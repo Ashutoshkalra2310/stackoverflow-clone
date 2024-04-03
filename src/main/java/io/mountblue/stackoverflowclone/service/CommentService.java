@@ -7,4 +7,6 @@ public interface CommentService {
     void updateQuestionComment(Comment comment);
     void deleteComment(Comment comment);
     Comment findById(Long commentId);
+    public void saveAnswerComment(Comment comment, Long answerId);
+    public void updateAnswerComment(Comment comment);
 }

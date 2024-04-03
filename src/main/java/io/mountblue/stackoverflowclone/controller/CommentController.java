@@ -1,5 +1,6 @@
 package io.mountblue.stackoverflowclone.controller;
 
+import io.mountblue.stackoverflowclone.entity.Answer;
 import io.mountblue.stackoverflowclone.entity.Comment;
 import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.service.AnswerService;
@@ -32,6 +33,18 @@ public class CommentController {
         return "redirect:/question/" + questionId;
     }
 
+    @PostMapping("/addAnswerComment")
+    public String saveAnswerComment(@ModelAttribute("Comment") Comment comment,
+                                      @RequestParam("answerId") Long answerId,
+                                      @RequestParam("questionId") Long questionId){
+        if(comment.getId() != null){
+            System.out.println("in updated");
+            commentService.updateAnswerComment(comment);
+        } else {
+            commentService.saveAnswerComment(comment, answerId);
+        }
+        return "redirect:/question/" + questionId;
+    }
     @GetMapping("/deleteQuestionComment/{commentId}")
     public String deleteQuestionComment(@PathVariable("commentId") Long commentId){
         Comment comment = commentService.findById(commentId);
@@ -47,5 +60,22 @@ public class CommentController {
         model.addAttribute("question", question);
         model.addAttribute("Comment", comment);
         return "showQuestion";
+    }
+    @GetMapping("/updateAnswerComment/{commentId}/{questionId}")
+    public String updateAnswerComment(@PathVariable("commentId") Long commentId, @PathVariable("questionId") Long questionId, Model model){
+        Comment comment = commentService.findById(commentId);
+        Answer answer = answerService.findById(comment.getAnswer().getId());
+        Question question = questionService.findById(questionId);
+        model.addAttribute("answer", answer);
+        model.addAttribute("question", question);
+        model.addAttribute("Comment", comment);
+        return "showQuestion";
+    }
+    @GetMapping("/deleteAnswerComment/{commentId}/{questionId}")
+    public String deleteAnswerComment(@PathVariable("commentId") Long commentId, @PathVariable("questionId") Long questionId){
+        Comment comment = commentService.findById(commentId);
+        Answer Answer = answerService.findById(comment.getAnswer().getId());
+        commentService.deleteComment(comment);
+        return "redirect:/question/" + questionId;
     }
 }

@@ -30,6 +30,7 @@ public class AnswerServiceImpl implements AnswerService{
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = localDateTime.format(dateTimeFormatter);
         answer.setPublishedAt(formattedDateTime);
+        answer.setVoteCount(0L);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
         answer.setUser(user);
@@ -62,6 +63,14 @@ public class AnswerServiceImpl implements AnswerService{
 
     @Override
     public void save(Answer answer) {
+        answerRepository.save(answer);
+    }
+
+    @Override
+    public void markCorrectAnswer(Long id) {
+
+        Answer answer = answerRepository.findById(id).orElse(null);
+        answer.setIsCorrectAnswer(Boolean.TRUE);
         answerRepository.save(answer);
     }
 }
