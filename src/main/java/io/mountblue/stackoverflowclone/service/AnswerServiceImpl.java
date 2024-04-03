@@ -33,6 +33,7 @@ public class AnswerServiceImpl implements AnswerService{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
         answer.setUser(user);
+        answer.setVoteCount(0L);
         answerRepository.save(answer);
     }
     public void updateAnswer(Answer updatedAnswer) {

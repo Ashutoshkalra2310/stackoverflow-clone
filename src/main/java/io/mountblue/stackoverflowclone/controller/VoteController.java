@@ -2,6 +2,7 @@ package io.mountblue.stackoverflowclone.controller;
 
 import org.springframework.stereotype.Controller;
 import io.mountblue.stackoverflowclone.service.VoteService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -12,28 +13,28 @@ public class VoteController {
     public VoteController(VoteService voteService){
         this.voteService=voteService;
     }
-    @PostMapping("/upvoteQuestion/{questionId}")
-    public String upvoteQuestion(@PathVariable Long questionId,@PathVariable Long userId) {
-        voteService.upVoteQuestion(questionId, userId);
-        return "redirect:show-question";
+    @GetMapping("/upvoteQuestion/{questionId}")
+    public String upvoteQuestion(@PathVariable Long questionId) {
+        voteService.upVoteQuestion(questionId);
+        return "redirect:/question/" + questionId;
     }
 
-    @PostMapping("/downvoteQuestion/{questionId}")
-    public String downvoteQuestion(@PathVariable Long questionId,@PathVariable Long userId) {
-        voteService.downVoteQuestion(questionId, userId);
-        return "redirect:show-question";
+    @GetMapping("/downvoteQuestion/{questionId}")
+    public String downvoteQuestion(@PathVariable Long questionId) {
+        voteService.downVoteQuestion(questionId);
+        return "redirect:/question/" + questionId;
     }
 
-    @PostMapping("/upvoteAnswer/{answerId}")
-    public String upvoteAnswer(@PathVariable Long answerId,@PathVariable Long userId) {
-        voteService.upVoteAnswer(answerId, userId);
-        return "redirect:show-question";
+    @GetMapping("/upvoteAnswer/{answerId}/{questionId}")
+    public String upvoteAnswer(@PathVariable Long answerId, @PathVariable Long questionId) {
+        voteService.upVoteAnswer(answerId);
+        return "redirect:/question/" + questionId;
     }
 
-    @PostMapping("/downvoteAnswer/{answerId}")
-    public String downvoteAnswer(@PathVariable Long answerId,@PathVariable Long userId) {
-        voteService.downVoteAnswer(answerId, userId);
-        return "redirect:show-question";
+    @GetMapping("/downvoteAnswer/{answerId}/{questionId}")
+    public String downvoteAnswer(@PathVariable Long answerId, @PathVariable Long questionId) {
+        voteService.downVoteAnswer(answerId);
+        return "redirect:/question/" + questionId;
     }
 
 

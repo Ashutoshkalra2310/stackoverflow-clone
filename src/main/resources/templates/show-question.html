@@ -423,13 +423,15 @@
             <br>
             <div class="inner-question">
                 <div class="votes">
-                    <button class="upvote" onclick="">
+                    <a th:href="@{'/upvoteQuestion/' + ${question.id}}">
+                        <button class="upvote" type="submit">
                         <svg aria-hidden="true" class="svg-icon iconArrowUp" width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z"></path></svg>
-                    </button>
+                    </button></a>
                     <b th:text="${question.voteCount}"></b>
-                    <button class="downvote" onclick="">
+                    <a th:href="@{'/downvoteQuestion/' + ${question.id}}">
+                    <button class="downvote" type="submit">
                         <svg aria-hidden="true" class="svg-icon iconArrowDown" width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z"></path></svg>
-                    </button>
+                    </button></a>
                 </div>
                 <div class="question-description">
                     <p th:utext="${question.content}"></p>
@@ -488,13 +490,15 @@
                 <br>
                 <div class="inner-question">
                     <div class="votes">
-                        <button class="upvote" onclick="">
+                        <a th:href="@{'/upvoteAnswer/' + ${answer.id} + '/' + ${question.id}}">
+                            <button class="upvote" onclick="">
                             <svg aria-hidden="true" class="svg-icon iconArrowUp" width="18" height="18" viewBox="0 0 18 18"><path d="M1 12h16L9 4l-8 8Z"></path></svg>
-                        </button>
-<!--                        <b th:text="${answer.voteCount}"></b>-->
-                        <button class="downvote" onclick="">
+                        </button></a>
+                        <b th:text="${answer.voteCount}"></b>
+                        <a th:href="@{'/downvoteAnswer/' + ${answer.id} + '/' + ${question.id}}">
+                            <button class="downvote" onclick="">
                             <svg aria-hidden="true" class="svg-icon iconArrowDown" width="18" height="18" viewBox="0 0 18 18"><path d="M1 6h16l-8 8-8-8Z"></path></svg>
-                        </button>
+                        </button></a>
                     </div>
                     <div class="question-description">
                         <p th:utext="${answer.content}"></p>

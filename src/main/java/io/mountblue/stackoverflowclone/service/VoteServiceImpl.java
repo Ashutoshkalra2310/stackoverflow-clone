@@ -5,6 +5,9 @@ import io.mountblue.stackoverflowclone.repository.AnswerRepository;
 import io.mountblue.stackoverflowclone.repository.QuestionRepository;
 import io.mountblue.stackoverflowclone.repository.UserRepository;
 import io.mountblue.stackoverflowclone.repository.VoteRepository;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,69 +28,107 @@ public class VoteServiceImpl implements  VoteService {
         this.answerRepository = answerRepository;
     }
 
-    public void upVoteQuestion(Long questionId, Long userId) {
-        Optional<Vote> existingVote = voteRepository.findByQuestionIdAndUserId(questionId, userId);
-        if (existingVote.isEmpty()) {
-            Optional<Question> questionOptional = questionRepository.findById(questionId);
-            Optional<User> userOptional = userRepository.findById(userId);
-            Question question = questionOptional.get();
+    @Override
+    public void upVoteQuestion(Long questionId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).get();
+        Question question = questionRepository.findById(questionId).get();
+        Vote existingVote = voteRepository.findByQuestionAndUser(question, user);
+        if (existingVote != null) {
+            if (existingVote.getVoteType() == VoteType.UPVOTE) {
+                voteRepository.delete(existingVote);
+                question.setVoteCount(question.getVoteCount() - 1);
+            } else {
+                existingVote.setVoteType(VoteType.UPVOTE);
+                voteRepository.save(existingVote);
+                question.setVoteCount(question.getVoteCount() + 2); // Increment by 2 for toggling
+            }
+        } else {
             Vote vote = new Vote();
             vote.setQuestion(question);
-            vote.setUser(userOptional.get());
+            vote.setUser(user);
             vote.setVoteType(VoteType.UPVOTE);
-            vote.setAnswer(null);
             voteRepository.save(vote);
-
+            question.setVoteCount(question.getVoteCount() + 1);
         }
+        questionRepository.save(question);
     }
 
-    public void downVoteQuestion(Long questionId, Long userId) {
-        Optional<Vote> existingVote = voteRepository.findByQuestionIdAndUserId(questionId, userId);
-        if (existingVote.isEmpty()) {
-            Optional<Question> questionOptional = questionRepository.findById(questionId);
-            Optional<User> userOptional = userRepository.findById(userId);
-            Question question = questionOptional.get();
+    @Override
+    public void downVoteQuestion(Long questionId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).get();
+        Question question = questionRepository.findById(questionId).get();
+        Vote existingVote = voteRepository.findByQuestionAndUser(question, user);
+        if (existingVote != null) {
+            if (existingVote.getVoteType() == VoteType.DOWNVOTE) {
+                voteRepository.delete(existingVote);
+                question.setVoteCount(question.getVoteCount() + 1);
+            } else {
+                existingVote.setVoteType(VoteType.DOWNVOTE);
+                voteRepository.save(existingVote);
+                question.setVoteCount(question.getVoteCount() - 2); // Decrement by 2 for toggling
+            }
+        } else {
             Vote vote = new Vote();
             vote.setQuestion(question);
-            vote.setUser(userOptional.get());
+            vote.setUser(user);
             vote.setVoteType(VoteType.DOWNVOTE);
-            vote.setAnswer(null);
             voteRepository.save(vote);
-
+            question.setVoteCount(question.getVoteCount() - 1);
         }
-
+        questionRepository.save(question);
     }
 
-    public void upVoteAnswer(Long answerId, Long userId) {
-        Optional<Vote> existingVote = voteRepository.findByAnswerIdAndUserId(answerId, userId);
-        if (existingVote.isEmpty()) {
-            Optional<Answer> answerOptional = answerRepository.findById(answerId);
-            Optional<User> userOptional = userRepository.findById(userId);
-            Answer answer = answerOptional.get();
+    @Override
+    public void upVoteAnswer(Long answerId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).get();
+        Answer answer = answerRepository.findById(answerId).get();
+        Vote existingVote = voteRepository.findByAnswerAndUser(answer, user);
+        if (existingVote != null) {
+            if (existingVote.getVoteType() == VoteType.DOWNVOTE) {
+                existingVote.setVoteType(VoteType.UPVOTE);
+                voteRepository.save(existingVote);
+                answer.setVoteCount(answer.getVoteCount() + 2);
+            } else {
+                voteRepository.delete(existingVote);
+                answer.setVoteCount(answer.getVoteCount() - 1);
+            }
+        } else {
             Vote vote = new Vote();
             vote.setAnswer(answer);
-            vote.setUser(userOptional.get());
+            vote.setUser(user);
             vote.setVoteType(VoteType.UPVOTE);
-            vote.setQuestion(null);
             voteRepository.save(vote);
-
+            answer.setVoteCount(answer.getVoteCount() + 1);
         }
+        answerRepository.save(answer);
     }
 
-    public void downVoteAnswer(Long answerId, Long userId) {
-
-        Optional<Vote> existingVote = voteRepository.findByAnswerIdAndUserId(answerId, userId);
-        if (existingVote.isEmpty()) {
-            Optional<Answer> answerOptional = answerRepository.findById(answerId);
-            Optional<User> userOptional = userRepository.findById(userId);
-            Answer answer = answerOptional.get();
+    @Override
+    public void downVoteAnswer(Long answerId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).get();
+        Answer answer = answerRepository.findById(answerId).get();
+        Vote existingVote = voteRepository.findByAnswerAndUser(answer, user);
+        if (existingVote != null) {
+            if (existingVote.getVoteType() == VoteType.UPVOTE) {
+                existingVote.setVoteType(VoteType.DOWNVOTE);
+                voteRepository.save(existingVote);
+                answer.setVoteCount(answer.getVoteCount() - 2);
+            } else {
+                voteRepository.delete(existingVote);
+                answer.setVoteCount(answer.getVoteCount() + 1);
+            }
+        } else {
             Vote vote = new Vote();
             vote.setAnswer(answer);
-            vote.setUser(userOptional.get());
+            vote.setUser(user);
             vote.setVoteType(VoteType.DOWNVOTE);
-            vote.setQuestion(null);
             voteRepository.save(vote);
+            answer.setVoteCount(answer.getVoteCount() - 1);
         }
-
+        answerRepository.save(answer);
     }
 }
