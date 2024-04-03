@@ -132,7 +132,6 @@ public class QuestionController {
                                   @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
                                   @RequestParam(name = "tagSearch", required = false) String tagSearch,
                                   Model model){
-
         List<Question> questions = questionService.filterQuestion(noAnswer, noAcceptedAnswer, sortBy, tagSearch);
         model.addAttribute("questions", questions);
         model.addAttribute("noAnswer", noAnswer);
