@@ -5,7 +5,7 @@ import io.mountblue.stackoverflowclone.entity.User;
 import io.mountblue.stackoverflowclone.entity.View;
 
 public interface ViewService {
-    View findByUserAndQuestion(Question question, User user);
+    void addView(Question question);
 
     void save(View view);
 }

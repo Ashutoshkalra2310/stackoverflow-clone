@@ -10,7 +10,6 @@ public interface UserService {
     boolean isUserExist(String username);
     void saveUser(User user);
     List<User> findAll();
-
     List<Question> findByUserId(Long id);
     User findByEmail(String email);
 }

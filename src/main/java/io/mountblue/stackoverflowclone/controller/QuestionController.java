@@ -114,6 +114,7 @@ public class QuestionController {
     @GetMapping("/question/{questionId}")
     public String showQuestion(Model model,@PathVariable("questionId") Long id){
         Question question = questionService.findById(id);
+        viewService.addView(question);
         model.addAttribute("question", question);
         model.addAttribute("Comment", new Comment());
         model.addAttribute("answer", new Answer());
@@ -168,6 +169,7 @@ public class QuestionController {
     @GetMapping("/showQuestion/{questionId}")
     public String showQuestion(@PathVariable("questionId") Long id, Model model){
         Question question = questionService.findById(id);
+        viewService.addView(question);
         model.addAttribute("question", question);
         return "show-question";
     }
