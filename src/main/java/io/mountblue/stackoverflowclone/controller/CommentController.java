@@ -6,6 +6,7 @@ import io.mountblue.stackoverflowclone.service.AnswerService;
 import io.mountblue.stackoverflowclone.service.CommentService;
 import io.mountblue.stackoverflowclone.service.QuestionService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -37,5 +38,14 @@ public class CommentController {
         Question question = questionService.findById(comment.getQuestion().getId());
         commentService.deleteComment(comment);
         return "redirect:/question/" + question.getId();
+    }
+
+    @GetMapping("/updateQuestionComment/{commentId}")
+    public String updateQuestionComment(@PathVariable("commentId") Long commentId, Model model){
+        Comment comment = commentService.findById(commentId);
+        Question question = questionService.findById(comment.getQuestion().getId());
+        model.addAttribute("question", question);
+        model.addAttribute("Comment", comment);
+        return "showQuestion";
     }
 }

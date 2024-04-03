@@ -55,6 +55,7 @@ public class QuestionController {
                                  @RequestParam(value = "detailedProblem", required = false) String detailedProblem,
                                  @RequestParam(value = "expectingResults", required = false) String expectingResults
                                  ,Model model){
+
         if(detailedProblem != null){
             question.setContent(detailedProblem);
         }
@@ -78,6 +79,19 @@ public class QuestionController {
         return "redirect:/allQuestions";
     }
 
+    @GetMapping("/showQuestionToUpdate/{questionId}")
+    public String updateQuestion(@PathVariable("questionId") Long questionId, Model model){
+        Question question = questionService.findById(questionId);
+        model.addAttribute("question", question);
+        List<Tag> tagList = question.getTags();
+        StringBuilder tagString = new StringBuilder();
+        for(Tag tag : tagList){
+            tagString.append(tag.getName()).append(" ,");
+        }
+        model.addAttribute("tagList", tagString.substring(0, tagString.length()-1));
+        return "review-question";
+    }
+
     @GetMapping("/deleteQuestion/{questionId}")
     public String deleteQuestion(@PathVariable("questionId") Long id){
         questionService.deleteQuestion(id);
@@ -86,8 +100,9 @@ public class QuestionController {
     @GetMapping("/question/{questionId}")
     public String showQuestion(Model model,@PathVariable("questionId") Long id){
         Question question = questionService.findById(id);
-        model.addAttribute(question);
+        model.addAttribute("question", question);
         model.addAttribute("Comment", new Comment());
+        model.addAttribute("answer", new Answer());
         return "showQuestion";
     }
 

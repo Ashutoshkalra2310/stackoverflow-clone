@@ -16,7 +16,7 @@ import java.util.List;
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(columnDefinition = "TEXT")
     private String content;
     private String publishedAt;

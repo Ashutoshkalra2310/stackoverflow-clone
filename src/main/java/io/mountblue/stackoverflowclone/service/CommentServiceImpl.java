@@ -20,6 +20,7 @@ public class CommentServiceImpl implements CommentService{
     private final QuestionService questionService;
     private final AnswerService answerService;
     private final UserService userService;
+
     public CommentServiceImpl(CommentRepository commentRepository, QuestionService questionService, AnswerService answerService, UserService userService) {
         this.commentRepository = commentRepository;
         this.questionService = questionService;
@@ -47,11 +48,13 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public void updateQuestionComment(Comment comment) {
+        Comment existingComment = commentRepository.findById(comment.getId()).get();
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = localDateTime.format(dateTimeFormatter);
-        comment.setUpdatedAt(formattedDateTime);
-        commentRepository.save(comment);
+        existingComment.setUpdatedAt(formattedDateTime);
+        existingComment.setComment(comment.getComment());
+        commentRepository.save(existingComment);
     }
 
     @Override

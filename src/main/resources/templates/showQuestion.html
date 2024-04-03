@@ -446,8 +446,9 @@
             <!-- Display comments -->
         </div>
         <div class="buttons">
-            <a ><button style="border:none; font-weight:700;" type="submit">Update</button></a>
-            <a ><button style="border:none;  font-weight:700 " type="submit">Delete</button></a>
+            <a th:href="@{'/showQuestionToUpdate/' + ${question.id}}">
+            <button type="submit" style="border:none; border-radius:4px;font-weight:700;background-color:orange" >Update</button></a>
+            <a th:href="@{'/deleteQuestion/' + ${question.id}}"><button type="submit" style="background-color:red; border:none; border-radius:4px; font-weight:700 " >Delete</button></a>
         </div>
         <div class="comments">
             <h2 style="margin-bottom:20px">Comments:</h2>
@@ -470,6 +471,7 @@
             <!-- Add comment form -->
             <form action="#" th:action="@{/addQuestionComment}" th:object="${Comment}" method="POST">
                 <input type="hidden" name="questionId" th:value="${question.id}">
+                <input type="hidden" name="commentId" th:field="${Comment.id}">
                 <textarea name="content" th:field="${Comment.comment}"  placeholder="Enter your comment"></textarea>
                 <button type="submit">Add Comment</button>
             </form>
@@ -510,8 +512,10 @@
                     <p>Author: <span th:text="${answer.user.name}"></span></p>
                     <br>
                     <div class="buttons">
-                        <a ><button style="border:none;font-weight:700;" type="submit">Update</button></a>
-                        <a th:href="@{'/deleteAnswer/' + ${answer.id} + '/' + ${questionId}}"><button style=" border:none; font-weight:700 " type="submit">Delete</button></a>
+                        <a th:href="@{'/showAnswerToUpdate/' + ${answer.id}}"><button style="border:none; border-radius:4px;font-weight:700;background-color:orange" type="submit">Update</button></a>
+                        <a th:href="@{'/deleteAnswer/' + ${answer.id} + '/' + ${questionId}}"><button style="background-color:red; border:none; border-radius:4px; font-weight:700 " type="submit">Delete</button></a>
+<!--                        <a ><button style="border:none;font-weight:700;" type="submit">Update</button></a>-->
+<!--                        <a th:href="@{'/deleteAnswer/' + ${answer.id} + '/' + ${questionId}}"><button style=" border:none; font-weight:700 " type="submit">Delete</button></a>-->
                     </div>
                     <br>
                     <hr>
@@ -535,9 +539,10 @@
                 </form>
             </div>
             <!-- Add answer form -->
-            <form th:action="@{/saveAnswer}" method="post">
+            <form th:action="@{/saveAnswer}" method="post" th:object="${answer}">
                 <input type="hidden" name="questionId" th:value="${question.id}">
-                <textarea id="content" name="content" placeholder="Enter your answer"></textarea>
+                <input type="hidden" name="id" th:value="${answer.id}">
+                <textarea id="content" name="content" th:text="${answer.content}" placeholder="Enter your answer"></textarea>
                 <script>
                     tinymce.init({
                         selector: '#content',

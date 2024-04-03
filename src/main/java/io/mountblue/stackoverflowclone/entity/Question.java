@@ -33,10 +33,12 @@ public class Question {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id")
     List<Comment> comments;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "question_tags",
             joinColumns = @JoinColumn(name = "question_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags;
+    @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    private Set<View> views;
 
 }
