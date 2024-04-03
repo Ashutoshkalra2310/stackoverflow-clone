@@ -77,6 +77,7 @@ public class CommentServiceImpl implements CommentService{
         comment.setUpdatedAt(formattedDateTime);
         answer.setComments(comments);
         comment.setAnswer(answer);
+        comment.setPublishedAt(formattedDateTime);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName());
         comment.setUser(user);
@@ -84,11 +85,13 @@ public class CommentServiceImpl implements CommentService{
     }
 
     public void updateAnswerComment(Comment comment){
+        Comment existingComment = commentRepository.findById(comment.getId()).get();
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = localDateTime.format(dateTimeFormatter);
-        comment.setUpdatedAt(formattedDateTime);
-        commentRepository.save(comment);
+        existingComment.setUpdatedAt(formattedDateTime);
+        existingComment.setComment(comment.getComment());
+        commentRepository.save(existingComment);
     }
 
 }

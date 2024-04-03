@@ -24,10 +24,10 @@
             width: 200px;
             background-color: #333;
             padding: 20px;
-            margin-top:55px;
             margin-left:0px;
             overflow-y: auto;
             height:auto;
+            min-height:100vh;
         }
 
         .logo {
@@ -69,10 +69,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
             z-index: 1000;
             width: 100%;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -112,12 +108,12 @@
         }
         .container{
             width:90%;
-            height:100vh;
-            margin-top: 44px;
+            margin-top: 20px;
             margin-left: 0px;
             display:flex;
             flex-direction:column;
             min-height:auto;
+            margin-bottom:40px;
         }
         .container-header{
             display: flex;
@@ -194,6 +190,7 @@
             padding: 10px;
             bottom: 0;
             width: 100%;
+            position:fixed;
         }
         .question-list a{
             text-decoration: none;

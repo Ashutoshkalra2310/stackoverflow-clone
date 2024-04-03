@@ -8,4 +8,5 @@ public interface AnswerService {
     void deleteAnswer(Long id);
     Answer findById(Long id);
     void save(Answer answer);
+    void markCorrectAnswer(Long id);
 }

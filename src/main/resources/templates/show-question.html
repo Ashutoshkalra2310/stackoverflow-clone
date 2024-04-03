@@ -481,12 +481,13 @@
 
 
         <div class="answers">
-            <h2>Answers:</h2>
-            <br>
-            <hr>
+
             <!-- Iterate over answers and display each answer -->
             <div th:each="answer : ${question.answers}" class="answer">
                 <!-- Answer content -->
+                <h2>Answers:</h2>
+                <br>
+                <hr>
                 <br>
                 <div class="inner-question">
                     <div class="votes">
@@ -506,14 +507,16 @@
                 </div>
                 <!-- Answer features (created at, updated at, votes) -->
                 <br>
-                <div class="correct-answer-div">
-                <a><button class="correct-answer" style="border:none; border-radius:4px;font-weight:700;background-color:black">Mark As Correct Answer</button></a>
+                <div class="correct-answer-div" th:if="(!${answer.isCorrectAnswer})">
+                <a th:href="@{'/markCorrectAnswer/'+${answer.id}+'/'+${question.id}}"><button class="correct-answer" style="border:none; border-radius:4px;font-weight:700;background-color:black">Mark As Correct Answer</button></a>
                 </div>
+                <p th:if="${answer.isCorrectAnswer}" style="color:green; font-weight:600;">VERIFIED ANSWER</p>
                 <br>
                 <div class="answer-features">
-                    <p>Updated at: <span th:text="${answer.updatedAt}"></span></p>
+
 <!--                    <p>Votes: <span th:text="${answer.voteCount}"></span></p>-->
                     <p>Author: <span th:text="${answer.user.name}"></span></p>
+                    <p>Published at: <span th:text="${answer.publishedAt}"></span></p>
                     <br>
                     <div class="buttons">
                         <a th:href="@{'/showAnswerToUpdate/' + ${answer.id}}"><button style="border:none; font-weight:700;" type="submit">Update</button></a>
@@ -528,19 +531,29 @@
                 <br>
                 <br>
                 <h2>Comments:</h2>
+                <br>
+                <hr>
                 <div th:each="comment : ${answer.comments}">
-                    <p th:text="${comment.content}"></p>
+                    <br>
+                    <p th:text="${comment.comment}"></p>
+                    <br>
+                    <p>Author : <span th:text="${comment.user.name}"></span></p>
+                    <p>Published at : <span th:text="${comment.publishedAt}"></span></p>
+                    <br>
                     <div class="buttons">
-                        <a ><button style="border:none; font-weight:700;" type="submit">Update</button></a>
-                        <a ><button style=" border:none; font-weight:700 " type="submit">Delete</button></a>
+                        <a th:href="@{'/updateAnswerComment/' + ${comment.id} +'/' +${question.id}}"><button style="border:none; font-weight:700;" type="submit">Update</button></a>
+                        <a th:href="@{'/deleteAnswerComment/' + ${comment.id}+'/'+ ${question.id}}"><button style=" border:none; font-weight:700 " type="submit">Delete</button></a>
                     </div>
+                    <br> <hr> <br>
                 </div>
                 <!-- Add comment form -->
-                <form th:action="@{/addComment}" method="post">
+                <form th:action="@{/addAnswerComment}" method="post">
+                    <input type="hidden" name="questionId" th:value="${question.id}">
                     <input type="hidden" name="answerId" th:value="${answer.id}">
-                    <textarea name="content" placeholder="Enter your comment"></textarea>
+                    <textarea th:field="${Comment.comment}"  name="content" placeholder="Enter your comment"></textarea>
                     <button type="submit">Add Comment</button>
                 </form>
+                <br>
             </div>
             <!-- Add answer form -->
             <form th:action="@{/saveAnswer}" method="post" th:object="${answer}">

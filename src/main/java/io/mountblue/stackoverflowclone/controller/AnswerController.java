@@ -17,6 +17,7 @@ public class AnswerController {
     private final AnswerService answerService;
     private final QuestionService questionService;
 
+
     public AnswerController(AnswerService answerService, QuestionService questionService) {
         this.answerService = answerService;
         this.questionService = questionService;
@@ -49,6 +50,11 @@ public class AnswerController {
         return "redirect:/question/" + questionId;
     }
 
+    @GetMapping("/markCorrectAnswer/{answerId}/{questionId}")
+    public String markCorrectAnswer(@PathVariable("answerId") Long answerId, @PathVariable("questionId") Long questionId){
+        answerService.markCorrectAnswer(answerId);
+        return "redirect:/question/" +questionId;
+    }
 }
 
 
