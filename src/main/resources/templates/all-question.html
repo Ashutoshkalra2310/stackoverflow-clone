@@ -247,10 +247,11 @@
         </svg>
         Stack<strong style="font-family:sans-serif;">overflow</strong>
     </a>
-    <form action="/search" method="get" class="search-form">
+    <form action="#" th:action="@{/searchQuestion}" method="get" class="search-form">
         <input
                 type="text"
-                name="q"
+                name="keyword"
+                th:value="${keyword}"
                 class="search-input"
                 placeholder="Search..."
         />

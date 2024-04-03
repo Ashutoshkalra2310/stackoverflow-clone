@@ -34,8 +34,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             "WHERE " +
             "(LOWER(q.title) LIKE LOWER(concat('%', :keyword, '%')) OR " +
             "LOWER(q.content) LIKE LOWER(concat('%', :keyword, '%')) OR " +
-            "LOWER(t.name) LIKE LOWER(concat('%', :keyword, '%'))) AND " +
-            "(:username IS NULL OR LOWER(u.name) LIKE LOWER(concat('%', :username, '%')))")
-    List<Question> search(@Param("keyword") String keyword, @Param("username") String username);
+            "LOWER(t.name) LIKE LOWER(concat('%', :keyword, '%'))) OR " +
+            "(LOWER(u.name) LIKE LOWER(concat('%', :keyword, '%')))")
+    List<Question> search(@Param("keyword") String keyword);
 
 }

@@ -143,11 +143,17 @@ public class QuestionController {
 
     @GetMapping("/searchQuestion")
     public String searchQuestion(@RequestParam(value = "keyword", required = false) String keyword,
-                                 @RequestParam(value = "username", required = false) String username,
                                  Model model) {
-        List<Question> searchResults = questionService.search(keyword, username);
-        model.addAttribute("searchResults", searchResults);
-        return "search-results";
+        List<Question> searchResults = questionService.search(keyword);
+        model.addAttribute("questions", searchResults);
+        model.addAttribute("noAnswer", false);
+        model.addAttribute("noAcceptedAnswer", false);
+        model.addAttribute("newest", false);
+        model.addAttribute("oldest", false);
+        model.addAttribute("recentActivity", false);
+        model.addAttribute("tagSearch", "");
+        model.addAttribute("keyword", keyword);
+        return "all-question";
     }
     @GetMapping("/homepage")
     public String homepage(){
