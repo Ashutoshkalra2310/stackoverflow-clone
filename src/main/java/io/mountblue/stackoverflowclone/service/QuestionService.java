@@ -12,6 +12,6 @@ public interface QuestionService {
     Question findById(Long id);
     void save(Question question, String tags);
     void save(Question question);
-    List<Question> filterQuestion(boolean noAnswer, boolean noAcceptedAnswer, boolean newest, boolean oldest, boolean recentActivity, String tagSearch);
+    List<Question> filterQuestion(boolean noAnswer, boolean noAcceptedAnswer, String sortBy, String tagSearch);
     List<Question> search(String keyword);
 }

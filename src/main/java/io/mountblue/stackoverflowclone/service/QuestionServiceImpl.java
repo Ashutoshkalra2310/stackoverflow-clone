@@ -66,12 +66,12 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public List<Question> filterQuestion(boolean noAnswer, boolean noAcceptedAnswer, boolean newest, boolean oldest, boolean recentActivity, String tagSearch) {
+    public List<Question> filterQuestion(boolean noAnswer, boolean noAcceptedAnswer,String sortBy, String tagSearch) {
         List<Question> filteredQuestions;
-        if(!noAnswer && !noAcceptedAnswer && !newest && !oldest && !recentActivity && tagSearch.isEmpty()){
+        if(!noAnswer && !noAcceptedAnswer && sortBy.isEmpty() && tagSearch.isEmpty()){
             filteredQuestions = questionRepository.findAll();
         } else {
-            filteredQuestions = questionRepository.filterQuestions(noAnswer, noAcceptedAnswer, newest, oldest, recentActivity, tagSearch);
+            filteredQuestions = questionRepository.filterQuestions(noAnswer, noAcceptedAnswer, sortBy, tagSearch);
         }
         return filteredQuestions;
     }

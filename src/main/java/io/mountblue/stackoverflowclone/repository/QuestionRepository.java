@@ -12,23 +12,22 @@ import java.util.List;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query("SELECT q FROM Question q " +
-            "LEFT JOIN q.tags t " +
+            "LEFT JOIN FETCH q.answers a " +
             "WHERE (:noAnswer = false OR q.answers IS EMPTY) " +
             "AND (:noAcceptedAnswer = false OR q.isAnswered IS NULL) " +
-            "AND (:newest = true OR :oldest = true OR :recentActivity = true OR :tagSearch IS NOT NULL) " +
-            "AND (:tagSearch IS NULL OR LOWER(t.name) LIKE LOWER(concat('%', :tagSearch, '%'))) " +
+            "AND (:sortBy IS NOT NULL OR :tagSearch IS NOT NULL) " +
+            "AND (:tagSearch IS NULL OR LOWER(q.title) LIKE LOWER(concat('%', :tagSearch, '%'))) " +
             "ORDER BY " +
-            "CASE WHEN :newest = true THEN q.createdAt END DESC, " +
-            "CASE WHEN :oldest = true THEN q.createdAt END ASC, " +
-            "CASE WHEN :recentActivity = true THEN q.updatedAt END DESC")
+            "CASE WHEN :sortBy = 'newest' THEN q.createdAt END DESC, " +
+            "CASE WHEN :sortBy = 'oldest' THEN q.createdAt END ASC, " +
+            "CASE WHEN :sortBy = 'recentActivity' THEN q.updatedAt END DESC")
     List<Question> filterQuestions(@Param("noAnswer") boolean noAnswer,
                                    @Param("noAcceptedAnswer") boolean noAcceptedAnswer,
-                                   @Param("newest") boolean newest,
-                                   @Param("oldest") boolean oldest,
-                                   @Param("recentActivity") boolean recentActivity,
+                                   @Param("sortBy") String sortBy,
                                    @Param("tagSearch") String tagSearch);
 
-        @Query("SELECT DISTINCT q FROM Question q " +
+
+    @Query("SELECT DISTINCT q FROM Question q " +
             "LEFT JOIN q.tags t " +
             "JOIN q.user u " +
             "WHERE " +

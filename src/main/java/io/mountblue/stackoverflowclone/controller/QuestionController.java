@@ -124,20 +124,16 @@ public class QuestionController {
     @GetMapping("/filters")
     public String filterQuestions(@RequestParam(name = "noAnswer", required = false, defaultValue = "false") boolean noAnswer,
                                   @RequestParam(name = "noAcceptedAnswer", required = false, defaultValue = "false") boolean noAcceptedAnswer,
-                                  @RequestParam(name = "newest", required = false, defaultValue = "false") boolean newest,
-                                  @RequestParam(name = "oldest", required = false, defaultValue = "false") boolean oldest,
-                                  @RequestParam(name = "recentActivity", required = false, defaultValue = "false") boolean recentActivity,
+                                  @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
                                   @RequestParam(name = "tagSearch", required = false) String tagSearch,
                                   Model model){
 
-        List<Question> questions = questionService.filterQuestion(noAnswer, noAcceptedAnswer, newest, oldest, recentActivity, tagSearch);
+        List<Question> questions = questionService.filterQuestion(noAnswer, noAcceptedAnswer, sortBy, tagSearch);
         model.addAttribute("questions", questions);
         model.addAttribute("noAnswer", noAnswer);
         model.addAttribute("noAcceptedAnswer", noAcceptedAnswer);
-        model.addAttribute("newest", newest);
-        model.addAttribute("oldest", oldest);
-        model.addAttribute("recentActivity", recentActivity);
-        model.addAttribute("tagSearch", tagSearch);
+        model.addAttribute("sortBy", "newest");
+        model.addAttribute("tagSearch", "");
         return "all-question";
     }
 
@@ -148,9 +144,7 @@ public class QuestionController {
         model.addAttribute("questions", searchResults);
         model.addAttribute("noAnswer", false);
         model.addAttribute("noAcceptedAnswer", false);
-        model.addAttribute("newest", false);
-        model.addAttribute("oldest", false);
-        model.addAttribute("recentActivity", false);
+        model.addAttribute("sortBy", "newest");
         model.addAttribute("tagSearch", "");
         model.addAttribute("keyword", keyword);
         return "all-question";

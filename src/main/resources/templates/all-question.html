@@ -292,20 +292,21 @@
             <div>
                 <h3>Sort By:</h3>
                 <label>
-                    <input type="radio" name="sortBy" id="newestCheckbox" th:checked="${newest}" onclick="uncheckOtherRadios('newestCheckbox')">
+                    <input type="radio" name="sortBy" id="newestCheckbox" th:checked="${newest}" th:value="'newest'">
                     Newest
                 </label>
                 <br>
                 <label for="oldestCheckbox">
-                    <input type="radio" name="sortBy" id="oldestCheckbox" th:checked="${oldest}" onclick="uncheckOtherRadios('oldestCheckbox')">
+                    <input type="radio" name="sortBy" id="oldestCheckbox" th:checked="${oldest}" th:value="'oldest'">
                     Oldest
                 </label>
                 <br>
                 <label for="recentActivityCheckbox">
-                    <input type="radio" name="sortBy" id="recentActivityCheckbox" th:checked="${recentActivity}" onclick="uncheckOtherRadios('recentActivityCheckbox')">
+                    <input type="radio" name="sortBy" id="recentActivityCheckbox" th:checked="${recentActivity}" th:value="'recentActivity'">
                     Recent Activity
                 </label>
             </div>
+
 
             <script>
                 function uncheckOtherRadios(clickedRadioId) {
