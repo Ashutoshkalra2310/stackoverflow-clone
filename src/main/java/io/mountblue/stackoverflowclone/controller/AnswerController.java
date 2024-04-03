@@ -53,6 +53,9 @@ public class AnswerController {
     @GetMapping("/markCorrectAnswer/{answerId}/{questionId}")
     public String markCorrectAnswer(@PathVariable("answerId") Long answerId, @PathVariable("questionId") Long questionId){
         answerService.markCorrectAnswer(answerId);
+        Question question = questionService.findById(questionId);
+        question.setIsAnswered(Boolean.TRUE);
+        questionService.save(question);
         return "redirect:/question/" +questionId;
     }
 }
