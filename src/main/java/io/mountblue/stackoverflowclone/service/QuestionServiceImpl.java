@@ -132,5 +132,13 @@ public class QuestionServiceImpl implements QuestionService{
         return questionRepository.search(keyword);
     }
 
+    public List<Question> searchTags(String keyword) {
+        List<Question> allQuestions = questionRepository.findAll();
+        List<Question> searchResults=allQuestions.stream()
+                .filter(Question -> Question.getTags().stream()
+                        .anyMatch(Tag -> Tag.getName().equalsIgnoreCase(keyword)))
+                .collect(Collectors.toList());
+        return searchResults;
+    }
 
 }
