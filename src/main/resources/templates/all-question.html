@@ -327,6 +327,15 @@
         </div>
             <button type="submit" style="height: 46px; width: 138px; color:white; background-color:#0e79ea; border:none; border-radius:7px; font-weight: 700; cursor:pointer;">Filter</button>
         </form>
+        
+        <div>
+            <form action="#" th:action="@{/searchTags}" method="get" class="search-form">
+                <h3 >Tag:</h3>
+                <input type="text" name="keyword" th:value="${keyword}"
+                       class="search-input" placeholder="Search Tags...">
+            </form>
+        </div>
+
         <main>
         <section class="question-list">
             <h2 style="margin-left: 20px; margin-bottom: 20px;">Latest Questions</h2>
