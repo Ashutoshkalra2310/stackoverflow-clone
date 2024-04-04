@@ -12,7 +12,7 @@
       }
 
       body {
-          font-family: Arial, sans-serif;
+          font-family: sans-serif;
           background-color: #eff0f1;
           height: auto;
           width: 100%;
@@ -22,23 +22,22 @@
       }
 
       .sidebar {
-          width: 200px;
+          width: 300px;
           background-color: #333;
           padding: 20px;
-          margin-top:55px;
           margin-left:0px;
           overflow-y: auto;
           min-height: 100vh;
           height:auto;
       }
 
-      .logo {
-          font-size: 24px;
-          font-weight: bold;
-          text-decoration: none;
-          color: #fff;
-          display: block;
-      }
+<!--      .logo {-->
+<!--          font-size: 24px;-->
+<!--          font-weight: bold;-->
+<!--          text-decoration: none;-->
+<!--          color: #fff;-->
+<!--          display: block;-->
+<!--      }-->
 
       .menu {
           list-style-type: none;
@@ -47,12 +46,13 @@
 
       .menu-item {
           margin-bottom: 10px;
+          margin-top:10px;
       }
 
       .menu-link {
           color: #fff;
           text-decoration: none;
-          font-size: 16px;
+          font-size: 22px;
           display: block;
           padding: 10px;
           border-radius: 5px;
@@ -65,48 +65,44 @@
 
 
       .header {
-          background-color: #242729;
-          color: #fff;
-          padding: 13px 64px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          z-index: 1000;
-          width: 100%;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          height: 63px;
+           background-color: #242729;
+            color: #fff;
+            padding: 13px 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: 80px;
       }
 
-      .search-form {
-          display: flex;
-          align-items: center;
-          margin-right: 20px;
-          width:45%;
-      }
+<!--      .search-form {-->
+<!--          display: flex;-->
+<!--          align-items: center;-->
+<!--          margin-right: 20px;-->
+<!--          width:45%;-->
+<!--      }-->
       ul li{
       list-style:none;
       }
 
-      .search-input {
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          margin-left: 10px;
-          width:100%;
-      }
-      .login-button, .signup-button{
-          font-weight:700;
-          cursor:pointer;
-          color:white;
-          text-decoration:none;
-      }
-      .login-button:hover, .signup-button:hover{
-          color:white
-      }
+<!--      .search-input {-->
+<!--          padding: 8px;-->
+<!--          border: 1px solid #ccc;-->
+<!--          border-radius: 5px;-->
+<!--          margin-left: 10px;-->
+<!--          width:100%;-->
+<!--      }-->
+<!--      .login-button, .signup-button{-->
+<!--          font-weight:700;-->
+<!--          cursor:pointer;-->
+<!--          color:white;-->
+<!--          text-decoration:none;-->
+<!--      }-->
+<!--      .login-button:hover, .signup-button:hover{-->
+<!--          color:white-->
+<!--      }-->
       .content{
           display:flex;
           width:100%;
@@ -122,17 +118,62 @@
       text-decoration:none;
       color:white;
     }
-    .card-name:hover{
-        color:#97bfea;
-    }
-    .card a{
+<!--    .card-name:hover{-->
+<!--        color:#97bfea;-->
+<!--    }-->
+    .card {
        text-decoration:none;
        color:black;
     }
-    .card a:hover{
+    .card:hover{
       text-decoration:none;
-      color:black;
+      color:#366ca6;;
     }
+    .search-input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-left: 10px;
+        width:100%;
+    }
+    .login-button, .signup-button{
+        font-weight:700;
+        cursor:pointer;
+        color:white
+    }
+    .login-button:hover, .signup-button:hover{
+        color:white
+    }
+
+      .login-btns{
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: space-evenly;
+          width: 236px;
+          font-size: 24px;
+      }
+      .search-form {
+            display: flex;
+            align-items: center;
+            margin-right: 160px;
+            width: 45%;
+      }
+
+      .search-input {
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          margin-left: 10px;
+          width: 100%;
+      }
+     .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #fff;
+            display: block;
+        }
   </style>
 </head>
 <body>
@@ -174,25 +215,26 @@
     <a href="#" class="logo"></a>
     <ul class="menu">
       <li class="menu-item"><a href="#" th:href="@{/homepage}" class="menu-link">HomePage</a></li>
+      <li class="menu-item"><a href="#" th:href="@{/}" class="menu-link">All Questions</a></li>
       <li class="menu-item"><a href="#" th:href="@{/tagList}" class="menu-link">Tags</a></li>
       <li class="menu-item"><a href="#" th:href="@{/userList}" class="menu-link">Users</a></li>
     </ul>
   </div>
   <div class="container">
-    <div><h1 style=" margin-top:40px; font-weight:700">Users</h1></div>
+    <div><h1 style=" margin-top:40px; font-weight:700">Users - <span th:text="${users.size()}"></span></h1></div>
     <div class="row">
       <!-- Iterate over the list of tags -->
       <div class="col-lg-3 col-md-6" style="margin-top:40px" th:each="user : ${users}">
-        <div class="card">
-          <a th:href="@{/showUser(userId=${user.id})}" >
+        <a th:href="@{/showUser(userId=${user.id})}" >
+        <div style="width:270px; box-shadow: 1px 3px 4px rgba(0,0,0,0.3);" class="card">
             <div class="card-body" style="text-align:center; font-weight:700">
               <h5 class="card-title card-name" th:text="${user.name}"></h5>
               <p class="card-text">Email: <span th:text="${user.email}"></span></p>
               <p class="card-text">Questions Asked: <span th:text="${user.questions.size()}"></span></p>
               <!-- Add more tag details here if needed -->
             </div>
-          </a>
         </div>
+        </a>
       </div>
     </div>
   </div>

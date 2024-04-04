@@ -26,7 +26,7 @@ public class CommentController {
     public String saveQuestionComment(@ModelAttribute("Comment") Comment comment,
                                       @RequestParam("questionId") Long questionId){
         if(comment.getId() != null){
-            commentService.updateQuestionComment(comment);
+            commentService.updateComment(comment);
         } else {
             commentService.saveQuestionComment(comment, questionId);
         }
@@ -38,8 +38,7 @@ public class CommentController {
                                       @RequestParam("answerId") Long answerId,
                                       @RequestParam("questionId") Long questionId){
         if(comment.getId() != null){
-            System.out.println("in updated");
-            commentService.updateAnswerComment(comment);
+            commentService.updateComment(comment);
         } else {
             commentService.saveAnswerComment(comment, answerId);
         }
@@ -59,7 +58,7 @@ public class CommentController {
         Question question = questionService.findById(comment.getQuestion().getId());
         model.addAttribute("question", question);
         model.addAttribute("Comment", comment);
-        return "showQuestion";
+        return "show-question";
     }
     @GetMapping("/updateAnswerComment/{commentId}/{questionId}")
     public String updateAnswerComment(@PathVariable("commentId") Long commentId, @PathVariable("questionId") Long questionId, Model model){
@@ -69,7 +68,7 @@ public class CommentController {
         model.addAttribute("answer", answer);
         model.addAttribute("question", question);
         model.addAttribute("Comment", comment);
-        return "showQuestion";
+        return "show-question";
     }
     @GetMapping("/deleteAnswerComment/{commentId}/{questionId}")
     public String deleteAnswerComment(@PathVariable("commentId") Long commentId, @PathVariable("questionId") Long questionId){

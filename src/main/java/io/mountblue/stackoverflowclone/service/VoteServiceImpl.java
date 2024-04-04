@@ -36,12 +36,14 @@ public class VoteServiceImpl implements  VoteService {
         Vote existingVote = voteRepository.findByQuestionAndUser(question, user);
         if (existingVote != null) {
             if (existingVote.getVoteType() == VoteType.UPVOTE) {
+                // If the user already upvoted, remove the vote and decrement vote count by 1
                 voteRepository.delete(existingVote);
                 question.setVoteCount(question.getVoteCount() - 1);
             } else {
+                // If the user downvoted and now upvoting, update the vote and increment vote count by 2
                 existingVote.setVoteType(VoteType.UPVOTE);
                 voteRepository.save(existingVote);
-                question.setVoteCount(question.getVoteCount() + 2); // Increment by 2 for toggling
+                question.setVoteCount(question.getVoteCount() + 1);
             }
         } else {
             Vote vote = new Vote();
@@ -62,12 +64,14 @@ public class VoteServiceImpl implements  VoteService {
         Vote existingVote = voteRepository.findByQuestionAndUser(question, user);
         if (existingVote != null) {
             if (existingVote.getVoteType() == VoteType.DOWNVOTE) {
+                // If the user already downvoted, remove the vote and increment vote count by 1
                 voteRepository.delete(existingVote);
                 question.setVoteCount(question.getVoteCount() + 1);
             } else {
+                // If the user upvoted and now downvoting, update the vote and decrement vote count by 2
                 existingVote.setVoteType(VoteType.DOWNVOTE);
                 voteRepository.save(existingVote);
-                question.setVoteCount(question.getVoteCount() - 2); // Decrement by 2 for toggling
+                question.setVoteCount(question.getVoteCount() - 1);
             }
         } else {
             Vote vote = new Vote();
@@ -90,7 +94,7 @@ public class VoteServiceImpl implements  VoteService {
             if (existingVote.getVoteType() == VoteType.DOWNVOTE) {
                 existingVote.setVoteType(VoteType.UPVOTE);
                 voteRepository.save(existingVote);
-                answer.setVoteCount(answer.getVoteCount() + 2);
+                answer.setVoteCount(answer.getVoteCount() + 1);
             } else {
                 voteRepository.delete(existingVote);
                 answer.setVoteCount(answer.getVoteCount() - 1);
@@ -116,7 +120,7 @@ public class VoteServiceImpl implements  VoteService {
             if (existingVote.getVoteType() == VoteType.UPVOTE) {
                 existingVote.setVoteType(VoteType.DOWNVOTE);
                 voteRepository.save(existingVote);
-                answer.setVoteCount(answer.getVoteCount() - 2);
+                answer.setVoteCount(answer.getVoteCount() - 1);
             } else {
                 voteRepository.delete(existingVote);
                 answer.setVoteCount(answer.getVoteCount() + 1);

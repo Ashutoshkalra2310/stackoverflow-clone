@@ -40,7 +40,7 @@ public class AnswerController {
         model.addAttribute("question", question);
         model.addAttribute("Comment", new Comment());
         model.addAttribute("answer", answer);
-        return "showQuestion";
+        return "show-question";
     }
 
     @GetMapping("/deleteAnswer/{answerId}/{questionId}")

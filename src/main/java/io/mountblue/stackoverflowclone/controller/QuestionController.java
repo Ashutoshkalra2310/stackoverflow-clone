@@ -145,7 +145,12 @@ public class QuestionController {
     @GetMapping("/searchQuestion")
     public String searchQuestion(@RequestParam(value = "keyword", required = false) String keyword,
                                  Model model) {
-        List<Question> searchResults = questionService.search(keyword);
+        List<Question> searchResults;
+        if(keyword.isEmpty()){
+            searchResults = questionService.findAll();
+        } else {
+            searchResults = questionService.search(keyword);
+        }
         model.addAttribute("questions", searchResults);
         model.addAttribute("noAnswer", false);
         model.addAttribute("noAcceptedAnswer", false);

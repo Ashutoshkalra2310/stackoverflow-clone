@@ -132,5 +132,10 @@ public class QuestionServiceImpl implements QuestionService{
         return questionRepository.search(keyword);
     }
 
+    @Override
+    public List<Question> findAll() {
+        return questionRepository.findAll();
+    }
+
 
 }
