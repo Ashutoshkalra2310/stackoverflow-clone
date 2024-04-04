@@ -436,7 +436,8 @@
                 <div class="question-description">
                     <p th:utext="${question.content}"></p>
                 </div>
-
+                <!-- Display the image if available -->
+                <iframe th:src="'data:' + ${fileType} + ';base64,' + ${base64Data}" style="width:100%; height:500px;"></iframe>
             </div>
             <div class="question-features">
             <p>Created at: <span th:text="${question.createdAt}"></span></p>

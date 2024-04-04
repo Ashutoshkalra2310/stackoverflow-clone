@@ -59,7 +59,7 @@ public class CommentController {
         Question question = questionService.findById(comment.getQuestion().getId());
         model.addAttribute("question", question);
         model.addAttribute("Comment", comment);
-        return "showQuestion";
+        return "show-question";
     }
     @GetMapping("/updateAnswerComment/{commentId}/{questionId}")
     public String updateAnswerComment(@PathVariable("commentId") Long commentId, @PathVariable("questionId") Long questionId, Model model){
@@ -69,7 +69,7 @@ public class CommentController {
         model.addAttribute("answer", answer);
         model.addAttribute("question", question);
         model.addAttribute("Comment", comment);
-        return "showQuestion";
+        return "show-question";
     }
     @GetMapping("/deleteAnswerComment/{commentId}/{questionId}")
     public String deleteAnswerComment(@PathVariable("commentId") Long commentId, @PathVariable("questionId") Long questionId){

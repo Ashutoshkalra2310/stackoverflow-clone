@@ -25,6 +25,7 @@ public class Question {
     private Long viewCount;
     private Long voteCount;
     private Boolean isAnswered;
+    private String imageFileName;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     private User user;
@@ -38,7 +39,8 @@ public class Question {
             joinColumns = @JoinColumn(name = "question_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags;
-    @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private Set<View> views;
-
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<Vote> votes;
 }
