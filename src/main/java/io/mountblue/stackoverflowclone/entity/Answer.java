@@ -32,5 +32,7 @@ public class Answer {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "answer_id")
     List<Comment> comments;
+    @OneToMany(mappedBy = "answer", cascade = CascadeType.REMOVE)
+    private List<Vote> votes;
 
 }

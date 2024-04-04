@@ -12,11 +12,10 @@ import java.util.List;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query("SELECT q FROM Question q " +
-            "LEFT JOIN FETCH q.answers a " +
+            "LEFT JOIN  q.tags t " +
             "WHERE (:noAnswer = false OR q.answers IS EMPTY) " +
             "AND (:noAcceptedAnswer = false OR q.isAnswered IS NULL) " +
-            "AND (:sortBy IS NOT NULL OR :tagSearch IS NOT NULL) " +
-            "AND (:tagSearch IS NULL OR LOWER(q.title) LIKE LOWER(concat('%', :tagSearch, '%'))) " +
+            "AND (:tagSearch IS NULL OR LOWER(t.name) LIKE CONCAT('%', LOWER(:tagSearch), '%')) " +
             "ORDER BY " +
             "CASE WHEN :sortBy = 'newest' THEN q.createdAt END DESC, " +
             "CASE WHEN :sortBy = 'oldest' THEN q.createdAt END ASC, " +

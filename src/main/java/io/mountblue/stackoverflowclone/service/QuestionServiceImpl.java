@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,15 +24,18 @@ public class QuestionServiceImpl implements QuestionService{
     private final QuestionRepository questionRepository;
     private final TagService tagService;
     private final UserService userService;
+    private final StorageService storageService;
 
-    public QuestionServiceImpl(QuestionRepository questionRepository, TagService tagService, UserService userService) {
+    public QuestionServiceImpl(QuestionRepository questionRepository, TagService tagService, UserService userService, StorageService storageService) {
         this.questionRepository = questionRepository;
         this.tagService = tagService;
         this.userService = userService;
+        this.storageService = storageService;
     }
 
     @Override
-    public void save(Question question, String tagList) {
+    public void save(Question question, MultipartFile file, String tagList) {
+        question.setImageFileName(storageService.uploadFiles(file));
         String[] newTagNames = tagList.trim().split(",");
         List<Tag> existingTags = tagService.findAll();
         Map<String, Tag> allTagsByName = new HashMap<>();

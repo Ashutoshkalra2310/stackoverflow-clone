@@ -1,14 +1,10 @@
 package io.mountblue.stackoverflowclone.controller;
 
 import io.mountblue.stackoverflowclone.entity.*;
-import io.mountblue.stackoverflowclone.service.CommentService;
+import io.mountblue.stackoverflowclone.service.*;
 import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.entity.View;
-import io.mountblue.stackoverflowclone.service.QuestionService;
 import io.mountblue.stackoverflowclone.entity.Tag;
-import io.mountblue.stackoverflowclone.service.TagService;
-import io.mountblue.stackoverflowclone.service.UserService;
-import io.mountblue.stackoverflowclone.service.ViewService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,14 +26,14 @@ public class QuestionController {
     private final ViewService viewService;
     private final TagService tagService;
     private final UserService userService;
-    private final CommentService commentService;
+    private final StorageService storageService;
 
-    public QuestionController(QuestionService questionService, TagService tagService, UserService userService, CommentService commentService, ViewService viewService) {
+    public QuestionController(QuestionService questionService, ViewService viewService, TagService tagService, UserService userService, StorageService storageService) {
         this.questionService = questionService;
         this.viewService = viewService;
         this.tagService = tagService;
         this.userService = userService;
-        this.commentService = commentService;
+        this.storageService = storageService;
     }
 
     @GetMapping({"/allQuestions", "/"})
@@ -80,12 +78,14 @@ public class QuestionController {
         return "review-question";
     }
     @PostMapping("/saveQuestion")
-    public String saveQuestion(@ModelAttribute("question") Question question, @RequestParam("tagList") String tags){
+    public String saveQuestion(@ModelAttribute("question") Question question,
+                               @RequestParam("image")MultipartFile file,
+                               @RequestParam("tagList") String tags){
         if(question.getId() != null){
             questionService.updateQuestion(question, tags);
         }
         else {
-            questionService.save(question, tags);
+            questionService.save(question, file, tags);
         }
         return "redirect:/allQuestions";
     }
@@ -117,6 +117,10 @@ public class QuestionController {
     public String showQuestion(Model model,@PathVariable("questionId") Long id, @AuthenticationPrincipal UserDetails userDetails){
         Question question = questionService.findById(id);
         viewService.addView(question);
+        byte[] data = storageService.getFileByName(question.getImageFileName());
+        String base64Data = Base64.getEncoder().encodeToString(data); // Convert file data to base64
+        model.addAttribute("base64Data", base64Data);
+        model.addAttribute("fileType", "image/png");
         model.addAttribute("question", question);
         model.addAttribute("Comment", new Comment());
         model.addAttribute("answer", new Answer());
@@ -125,14 +129,12 @@ public class QuestionController {
         }
         return "show-question";
     }
-
     @GetMapping("/filters")
     public String filterQuestions(@RequestParam(name = "noAnswer", required = false, defaultValue = "false") boolean noAnswer,
                                   @RequestParam(name = "noAcceptedAnswer", required = false, defaultValue = "false") boolean noAcceptedAnswer,
                                   @RequestParam(name = "sortBy", required = false, defaultValue = "newest") String sortBy,
                                   @RequestParam(name = "tagSearch", required = false) String tagSearch,
                                   Model model){
-
         List<Question> questions = questionService.filterQuestion(noAnswer, noAcceptedAnswer, sortBy, tagSearch);
         model.addAttribute("questions", questions);
         model.addAttribute("noAnswer", noAnswer);

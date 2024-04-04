@@ -13,7 +13,7 @@
 <body>
 <div class="container mt-4" >
     <h1>Ask a Public Question</h1>
-    <form action="#" th:action="@{/saveQuestion}" th:method="post" th:object="${question}" th:class="${showTitle}">
+    <form action="#" th:action="@{/saveQuestion}" th:method="post" th:object="${question}" th:class="${showTitle}" enctype="multipart/form-data">
         <input type="hidden" name="id" th:value="${question.id}">
         <div class="form-group">
             <label for="questionTitle">Title</label>
@@ -38,6 +38,9 @@
                 });
             </script>
         </div>
+        <br>
+        <label for="image">Upload Image:</label>
+        <input type="file" id="image" name="image">
         <br>
         <div class="form-group">
             <label>Add Tags</label>
