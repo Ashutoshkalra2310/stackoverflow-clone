@@ -58,6 +58,7 @@ public class CommentController {
         Question question = questionService.findById(comment.getQuestion().getId());
         model.addAttribute("question", question);
         model.addAttribute("Comment", comment);
+        model.addAttribute("answer", new Answer());
         return "show-question";
     }
     @GetMapping("/updateAnswerComment/{commentId}/{questionId}")

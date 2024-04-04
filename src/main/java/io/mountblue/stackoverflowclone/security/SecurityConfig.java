@@ -39,8 +39,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(configurer ->
                         configurer
-                                .requestMatchers("/", "/search", "/filters", "/register",
-                                        "/question/", "/saveUser", "/search").permitAll()
+                                .requestMatchers("/", "/search", "/filters", "/register","/homepage","/allQuestions","/tagList","/userList",
+                                        "/showTag","/showUser","/question/", "/saveUser", "/search", "/question/**","/searchQuestion", "/filters","/question").permitAll()
                                 .requestMatchers("/addQuestion", "/deleteQuestion/{questionId}",
                                         "/saveQuestion", "/reviewQuestion").authenticated()
                                 .requestMatchers("/**").authenticated()

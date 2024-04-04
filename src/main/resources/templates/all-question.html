@@ -331,10 +331,7 @@
                             radio.checked = false;
                         }
                     });
-                }border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-left: 0px;
-  width: 100%;
+                }
             </script>
 
             <div>
@@ -344,16 +341,7 @@
                 <button type="submit" style=" box-shadow: 1px 2px 5px rgba(0,0,0,0.4);margin-top:10px;height: 46px; width: 138px; color:white; background-color:#0e79ea; border:none; border-radius:7px; font-weight: 700; cursor:pointer;">Filter</button>
             </div>
         </div>
-
         </form>
-        
-        <div>
-            <form action="#" th:action="@{/searchTags}" method="get" class="search-form">
-                <h3 >Tag:</h3>
-                <input type="text" name="keyword" th:value="${keyword}"
-                       class="search-input" placeholder="Search Tags...">
-            </form>
-        </div>
 
         <main>
         <section class="question-list">

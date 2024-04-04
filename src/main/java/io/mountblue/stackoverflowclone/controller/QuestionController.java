@@ -5,6 +5,7 @@ import io.mountblue.stackoverflowclone.service.*;
 import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.entity.View;
 import io.mountblue.stackoverflowclone.entity.Tag;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -79,10 +80,10 @@ public class QuestionController {
     }
     @PostMapping("/saveQuestion")
     public String saveQuestion(@ModelAttribute("question") Question question,
-                               @RequestParam("image")MultipartFile file,
+                               @RequestParam(value = "image" , required = false)MultipartFile file,
                                @RequestParam("tagList") String tags){
         if(question.getId() != null){
-            questionService.updateQuestion(question, tags);
+            questionService.updateQuestion(question,file, tags);
         }
         else {
             questionService.save(question, file, tags);
@@ -116,9 +117,15 @@ public class QuestionController {
     @GetMapping("/question/{questionId}")
     public String showQuestion(Model model,@PathVariable("questionId") Long id, @AuthenticationPrincipal UserDetails userDetails){
         Question question = questionService.findById(id);
-        viewService.addView(question);
+        Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
+        if(authentication!=null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()) {
+            viewService.addView(question);
+        }
+        String base64Data="";
+        if(question.getImageFileName()!=null){
         byte[] data = storageService.getFileByName(question.getImageFileName());
-        String base64Data = Base64.getEncoder().encodeToString(data); // Convert file data to base64
+        base64Data = Base64.getEncoder().encodeToString(data);
+        }
         model.addAttribute("base64Data", base64Data);
         model.addAttribute("fileType", "image/png");
         model.addAttribute("question", question);
@@ -162,19 +169,6 @@ public class QuestionController {
         return "all-question";
     }
 
-    @GetMapping("/searchTags")
-    public String searchTags(@RequestParam(value = "keyword", required = false) String keyword,
-                             Model model){
-        List<Question> searchResults = questionService.searchTags(keyword);
-        model.addAttribute("questions", searchResults);
-        model.addAttribute("noAnswer", false);
-        model.addAttribute("noAcceptedAnswer", false);
-        model.addAttribute("sortBy", "newest");
-        model.addAttribute("tagSearch", "");
-        model.addAttribute("keyword", keyword);
-        return "all-question";
-    }
-    
     @GetMapping("/homepage")
     public String homepage(){
         return "home-page";

@@ -27,8 +27,8 @@ public class ViewServiceImpl implements ViewService{
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String email = userDetails.getUsername();
         User user = userService.findByEmail(email);
-        View view =  viewRepository.findByUserAndQuestion(question, user);
-        if(view == null){
+        View view = viewRepository.findByUserAndQuestion(question, user);
+        if (view == null) {
             view = new View();
             view.setQuestion(question);
             view.setUser(user);
@@ -36,6 +36,7 @@ public class ViewServiceImpl implements ViewService{
             question.setViewCount(question.getViewCount() + 1);
             questionService.save(question);
         }
+
     }
 
     @Override

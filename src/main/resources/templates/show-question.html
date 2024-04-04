@@ -378,7 +378,7 @@
             color:grey;
         }
         a:hover{
-            color:black;
+            color:white;
         }
         .question-description a{
             color:#2d607c;
@@ -412,8 +412,8 @@
         </form>
     <div class="login-btns">
         <div sec:authorize="!isAuthenticated()">
-            <a th:href="@{/login}"  class="login-button">Login</a>
-            <a th:href="@{/register}" class="signup-button">Sign Up</a>
+            <a style="text-decoration:none;" th:href="@{/login}"  class="login-button">Login</a>
+            <a style="text-decoration:none;" th:href="@{/register}" class="signup-button">Sign Up</a>
         </div>
         <div sec:authorize="isAuthenticated()">
             <a style="text-decoration:none;" th:href="@{/logout}" class="login-button">Logout</a>
@@ -434,7 +434,7 @@
     <div class="container">
         <div class="container-header">
             <h1>Question</h1>
-            <button th:href="@{/addQuestion}" style=" height: 46px; width: 138px; color:white; background-color:#0e79ea; border:none; border-radius:7px; font-weight: 700; cursor:pointer;">Ask Question</button>
+            <a th:href="@{/addQuestion}" ><button style=" height: 46px; width: 138px; color:white; background-color:#0e79ea; border:none; border-radius:7px; font-weight: 700; cursor:pointer;">Ask Question</button></a>
         </div>
         <div class="question-details">
             <h1 th:text="${question.title}"></h1>
@@ -453,9 +453,14 @@
                 </div>
                 <div class="question-description">
                     <p th:utext="${question.content}"></p>
+
+                    <div th:if="${base64Data!=''}">
+                        <br><br>
+                        <iframe th:src="'data:' + ${fileType} + ';base64,' + ${base64Data}" style=" display:block;"></iframe>
+                    </div>
                 </div>
                 <!-- Display the image if available -->
-                <iframe th:src="'data:' + ${fileType} + ';base64,' + ${base64Data}" style="width:100%; height:500px;"></iframe>
+
             </div>
             <div class="question-features">
             <p>Asked at: <span th:text="${question.createdAt}"></span></p>
@@ -502,9 +507,10 @@
         <div class="answers">
 
             <!-- Iterate over answers and display each answer -->
+            <h2>Answers:</h2>
             <div th:each="answer : ${question.answers}" class="answer">
                 <!-- Answer content -->
-                <h2>Answers:</h2>
+
                 <br>
                 <hr>
                 <br>

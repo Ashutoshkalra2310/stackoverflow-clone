@@ -35,7 +35,9 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public void save(Question question, MultipartFile file, String tagList) {
-        question.setImageFileName(storageService.uploadFiles(file));
+        if(!file.isEmpty()) {
+            question.setImageFileName(storageService.uploadFiles(file));
+        }
         String[] newTagNames = tagList.trim().split(",");
         List<Tag> existingTags = tagService.findAll();
         Map<String, Tag> allTagsByName = new HashMap<>();
@@ -87,8 +89,12 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public void updateQuestion(Question updatedQuestion, String tagList) {
+    public void updateQuestion(Question updatedQuestion,MultipartFile file, String tagList) {
+
         Question oldQuestion = questionRepository.findById(updatedQuestion.getId()).get();
+        if(file !=null) {
+            oldQuestion.setImageFileName(storageService.uploadFiles(file));
+        }
         oldQuestion.setTitle(updatedQuestion.getTitle());
         oldQuestion.setContent(updatedQuestion.getContent());
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -142,13 +148,13 @@ public class QuestionServiceImpl implements QuestionService{
         return questionRepository.findAll();
     }
 
-    public List<Question> searchTags(String keyword) {
-        List<Question> allQuestions = questionRepository.findAll();
-        List<Question> searchResults=allQuestions.stream()
-                .filter(Question -> Question.getTags().stream()
-                        .anyMatch(Tag -> Tag.getName().equalsIgnoreCase(keyword)))
-                .collect(Collectors.toList());
-        return searchResults;
-    }
+//    public List<Question> searchTags(String keyword) {
+//        List<Question> allQuestions = questionRepository.findAll();
+//        List<Question> searchResults=allQuestions.stream()
+//                .filter(Question -> Question.getTags().stream()
+//                        .anyMatch(Tag -> Tag.getName().equalsIgnoreCase(keyword)))
+//                .collect(Collectors.toList());
+//        return searchResults;
+//    }
 
 }

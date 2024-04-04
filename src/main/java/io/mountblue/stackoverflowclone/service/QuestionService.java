@@ -8,7 +8,7 @@ import java.util.List;
 public interface QuestionService {
 
     List<Question> getAllQuestions();
-    void updateQuestion(Question question, String tagList);
+    void updateQuestion(Question question, MultipartFile file, String tagList);
     void deleteQuestion(Long id);
     Question findById(Long id);
     void save(Question question, MultipartFile file, String tags);
@@ -16,5 +16,5 @@ public interface QuestionService {
     List<Question> filterQuestion(boolean noAnswer, boolean noAcceptedAnswer, String sortBy, String tagSearch);
     List<Question> search(String keyword);
     List<Question> findAll();
-    List<Question> searchTags(String keyword);
+//    List<Question> searchTags(String keyword);
 }
