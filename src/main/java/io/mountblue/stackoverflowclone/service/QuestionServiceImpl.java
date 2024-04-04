@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionServiceImpl implements QuestionService{
@@ -137,5 +138,13 @@ public class QuestionServiceImpl implements QuestionService{
         return questionRepository.findAll();
     }
 
+    public List<Question> searchTags(String keyword) {
+        List<Question> allQuestions = questionRepository.findAll();
+        List<Question> searchResults=allQuestions.stream()
+                .filter(Question -> Question.getTags().stream()
+                        .anyMatch(Tag -> Tag.getName().equalsIgnoreCase(keyword)))
+                .collect(Collectors.toList());
+        return searchResults;
+    }
 
 }

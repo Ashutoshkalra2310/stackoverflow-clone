@@ -15,4 +15,5 @@ public interface QuestionService {
     List<Question> filterQuestion(boolean noAnswer, boolean noAcceptedAnswer, String sortBy, String tagSearch);
     List<Question> search(String keyword);
     List<Question> findAll();
+    List<Question> searchTags(String keyword);
 }

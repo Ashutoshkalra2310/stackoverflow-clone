@@ -159,6 +159,20 @@ public class QuestionController {
         model.addAttribute("keyword", keyword);
         return "all-question";
     }
+
+    @GetMapping("/searchTags")
+    public String searchTags(@RequestParam(value = "keyword", required = false) String keyword,
+                             Model model){
+        List<Question> searchResults = questionService.searchTags(keyword);
+        model.addAttribute("questions", searchResults);
+        model.addAttribute("noAnswer", false);
+        model.addAttribute("noAcceptedAnswer", false);
+        model.addAttribute("sortBy", "newest");
+        model.addAttribute("tagSearch", "");
+        model.addAttribute("keyword", keyword);
+        return "all-question";
+    }
+    
     @GetMapping("/homepage")
     public String homepage(){
         return "home-page";

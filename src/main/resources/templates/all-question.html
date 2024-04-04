@@ -346,6 +346,15 @@
         </div>
 
         </form>
+        
+        <div>
+            <form action="#" th:action="@{/searchTags}" method="get" class="search-form">
+                <h3 >Tag:</h3>
+                <input type="text" name="keyword" th:value="${keyword}"
+                       class="search-input" placeholder="Search Tags...">
+            </form>
+        </div>
+
         <main>
         <section class="question-list">
             <h2 style="font-size:30px; margin-left: 20px; margin-bottom: 20px;">Questions : <span th:text="${questions.size()}"></span></h2>
