@@ -6,22 +6,26 @@ import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.entity.Tag;
 import io.mountblue.stackoverflowclone.service.AnswerService;
 import io.mountblue.stackoverflowclone.service.QuestionService;
+import io.mountblue.stackoverflowclone.service.StorageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Base64;
 import java.util.List;
 
 @Controller
 public class AnswerController {
     private final AnswerService answerService;
     private final QuestionService questionService;
+    private final StorageService storageService;
 
 
-    public AnswerController(AnswerService answerService, QuestionService questionService) {
+    public AnswerController(AnswerService answerService, QuestionService questionService, StorageService storageService) {
         this.answerService = answerService;
         this.questionService = questionService;
+        this.storageService = storageService;
     }
 
     @PostMapping("/saveAnswer")
@@ -41,6 +45,13 @@ public class AnswerController {
         model.addAttribute("question", question);
         model.addAttribute("Comment", new Comment());
         model.addAttribute("answer", answer);
+        String base64Data = "";
+        if (question.getImageFileName() != null) {
+            byte[] data = storageService.getFileByName(question.getImageFileName());
+            base64Data = Base64.getEncoder().encodeToString(data);
+        }
+        model.addAttribute("base64Data", base64Data);
+        model.addAttribute("fileType", "image/png");
         return "show-question";
     }
 

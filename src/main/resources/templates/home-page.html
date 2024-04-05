@@ -300,7 +300,7 @@ p {
 <body>
 
     <div class="header">
-        <a class="logo" style="font-family: sans-serif;">
+        <a href="#" th:href="@{/}" class="logo" style="font-family: sans-serif;">
             <svg aria-hidden="true" class="svg-icon iconLogoGlyphMd native native" width="28" height="28"
                  viewBox="0 0 32 37">
                 <path
@@ -343,7 +343,7 @@ p {
         </h2>
         <p class="your-paragraph-class">A community-based space to find and contribute answers to technical challenges,
             and one of the most popular websites in the world.</p>
-        <a th:href="@{/login}" class="your-button-class">Join the community</a>
+        <a th:href="@{/register}" class="your-button-class">Join the community</a>
         <p class="your-paragraph-class">or <a class="" style="color:black;" th:href="@{/allQuestions}">search content</a></p>
     </div>
 

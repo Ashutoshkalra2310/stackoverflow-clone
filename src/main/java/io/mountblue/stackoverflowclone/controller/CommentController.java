@@ -6,20 +6,25 @@ import io.mountblue.stackoverflowclone.entity.Question;
 import io.mountblue.stackoverflowclone.service.AnswerService;
 import io.mountblue.stackoverflowclone.service.CommentService;
 import io.mountblue.stackoverflowclone.service.QuestionService;
+import io.mountblue.stackoverflowclone.service.StorageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Base64;
 
 @Controller
 public class CommentController {
     private final CommentService commentService;
     private final QuestionService questionService;
     private final AnswerService answerService;
+    private final StorageService storageService;
 
-    public CommentController(CommentService commentService, QuestionService questionService, AnswerService answerService) {
+    public CommentController(CommentService commentService, QuestionService questionService, AnswerService answerService, StorageService storageService) {
         this.commentService = commentService;
         this.questionService = questionService;
         this.answerService = answerService;
+        this.storageService = storageService;
     }
 
     @PostMapping("/addQuestionComment")
@@ -59,6 +64,13 @@ public class CommentController {
         model.addAttribute("question", question);
         model.addAttribute("Comment", comment);
         model.addAttribute("answer", new Answer());
+        String base64Data = "";
+        if (question.getImageFileName() != null) {
+            byte[] data = storageService.getFileByName(question.getImageFileName());
+            base64Data = Base64.getEncoder().encodeToString(data);
+        }
+        model.addAttribute("base64Data", base64Data);
+        model.addAttribute("fileType", "image/png");
         return "show-question";
     }
     @GetMapping("/updateAnswerComment/{commentId}/{questionId}")
@@ -69,6 +81,13 @@ public class CommentController {
         model.addAttribute("answer", answer);
         model.addAttribute("question", question);
         model.addAttribute("Comment", comment);
+        String base64Data = "";
+        if (question.getImageFileName() != null) {
+            byte[] data = storageService.getFileByName(question.getImageFileName());
+            base64Data = Base64.getEncoder().encodeToString(data);
+        }
+        model.addAttribute("base64Data", base64Data);
+        model.addAttribute("fileType", "image/png");
         return "show-question";
     }
     @GetMapping("/deleteAnswerComment/{commentId}/{questionId}")
